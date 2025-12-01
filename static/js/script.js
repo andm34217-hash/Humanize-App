@@ -31,13 +31,14 @@ function summarize() {
     .then(response => response.json())
     .then(data => {
         if (data.summary) {
-            document.getElementById('ai-result').innerText = 'Rezumat: ' + data.summary;
+            document.getElementById('summary-result').innerText = data.summary;
+            document.getElementById('ai-error').innerText = '';
         } else {
-            document.getElementById('ai-result').innerText = 'Eroare: ' + (data.error || 'Necunoscut');
+            document.getElementById('ai-error').innerText = 'Eroare: ' + (data.error || 'Necunoscut');
         }
     })
     .catch(error => {
-        document.getElementById('ai-result').innerText = 'Eroare de rețea: ' + error.message;
+        document.getElementById('ai-error').innerText = 'Eroare de rețea: ' + error.message;
     });
 }
 
@@ -51,13 +52,14 @@ function rewrite() {
     .then(response => response.json())
     .then(data => {
         if (data.rewritten) {
-            document.getElementById('ai-result').innerText = 'Rescris: ' + data.rewritten;
+            document.getElementById('rewrite-result').innerText = data.rewritten;
+            document.getElementById('ai-error').innerText = '';
         } else {
-            document.getElementById('ai-result').innerText = 'Eroare: ' + (data.error || 'Necunoscut');
+            document.getElementById('ai-error').innerText = 'Eroare: ' + (data.error || 'Necunoscut');
         }
     })
     .catch(error => {
-        document.getElementById('ai-result').innerText = 'Eroare de rețea: ' + error.message;
+        document.getElementById('ai-error').innerText = 'Eroare de rețea: ' + error.message;
     });
 }
 
