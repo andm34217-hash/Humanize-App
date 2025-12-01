@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Bun venit la Humanize</h2>
+
+<p>Un instrument AI pentru studenți.</p>
+
+<section id="detect">
+
+    <h3>Detector AI</h3>
+
+    <textarea id="detect-text" placeholder="Introduceți textul pentru detectare"></textarea>
+
+    <button onclick="detectAI()">Detectează</button>
+
+    <div id="detect-result"></div>
+
+</section>
+
+<section id="summary">
+
+    <h3>Rezumat Inteligent</h3>
+
+    <textarea id="summary-text" placeholder="Introduceți textul pentru rezumat"></textarea>
+
+    <button onclick="summarize()">Rezuma</button>
+
+    <div id="summary-result"></div>
+
+</section>
+
+<section id="rewrite">
+
+    <h3>Rescriere Inteligentă</h3>
+
+    <textarea id="rewrite-text" placeholder="Introduceți textul pentru rescriere"></textarea>
+
+    <button onclick="rewrite()">Rescrie</button>
+
+    <div id="rewrite-result"></div>
+
+</section>
+
+<section id="calculators">
+
+    <h3>Calculatoare</h3>
+
+    <div>
+
+        <h4>Chimie - Masă Molară</h4>
+
+        <input id="formula" placeholder="Formula, e.g. H2O">
+
+        <button onclick="calcChemistry()">Calculează</button>
+
+        <div id="chem-result"></div>
+
+    </div>
+
+    <div>
+
+        <h4>Fizică - Kinematice</h4>
+
+        <input id="v0" placeholder="Viteză inițială">
+
+        <input id="a" placeholder="Accelerație">
+
+        <input id="t" placeholder="Timp">
+
+        <button onclick="calcPhysics()">Calculează</button>
+
+        <div id="phys-result"></div>
+
+    </div>
+
+    <div>
+
+        <h4>Termeni Matematici</h4>
+
+        <input id="expression" placeholder="Expresie, e.g. (x+1)^2">
+
+        <button onclick="calcTerm()">Calculează</button>
+
+        <div id="term-result"></div>
+
+    </div>
+
+</section>
+
+{% endblock %}
