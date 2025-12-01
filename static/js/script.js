@@ -1,9 +1,9 @@
 let detectedText = '';
-let humanPercentage = 0;
+let aiPercentage = 0;
 
 function detectAI() {
     const text = document.getElementById('ai-text').value;
-    if (text === detectedText && humanPercentage > 0) {
+    if (text === detectedText && aiPercentage >= 0) {
         // Already detected this text
         return;
     }
@@ -15,10 +15,10 @@ function detectAI() {
     .then(response => response.json())
     .then(data => {
         if (data.percentage !== undefined) {
-            humanPercentage = data.percentage;
+            aiPercentage = data.percentage;
             detectedText = text;
-            document.getElementById('progress-fill').style.width = humanPercentage + '%';
-            document.getElementById('percentage-text').innerText = humanPercentage + '%';
+            document.getElementById('progress-fill').style.width = aiPercentage + '%';
+            document.getElementById('percentage-text').innerText = aiPercentage + '%';
             document.getElementById('ai-error').innerText = '';
         } else {
             document.getElementById('ai-error').innerText = 'Eroare: ' + (data.error || 'Necunoscut');
