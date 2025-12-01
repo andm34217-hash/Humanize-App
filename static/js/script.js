@@ -1,10 +1,11 @@
-let detectedText = '';
-let aiPercentage = 0;
+let detectionCache = new Map();
 
 function detectAI() {
     const text = document.getElementById('ai-text').value;
-    if (text === detectedText && aiPercentage >= 0) {
-        // Already detected this text
+    if (detectionCache.has(text)) {
+        const percentage = detectionCache.get(text);
+        document.getElementById('progress-fill').style.width = percentage + '%';
+        document.getElementById('percentage-text').innerText = percentage + '%';
         return;
     }
     fetch('/detect', {
@@ -15,10 +16,10 @@ function detectAI() {
     .then(response => response.json())
     .then(data => {
         if (data.percentage !== undefined) {
-            aiPercentage = data.percentage;
-            detectedText = text;
-            document.getElementById('progress-fill').style.width = aiPercentage + '%';
-            document.getElementById('percentage-text').innerText = aiPercentage + '%';
+            const percentage = data.percentage;
+            detectionCache.set(text, percentage);
+            document.getElementById('progress-fill').style.width = percentage + '%';
+            document.getElementById('percentage-text').innerText = percentage + '%';
             document.getElementById('ai-error').innerText = '';
         } else {
             document.getElementById('ai-error').innerText = 'Eroare: ' + (data.error || 'Necunoscut');
