@@ -19,6 +19,7 @@
                 <a href="#about">Despre</a>
                 <a href="#contact">Contact</a>
             </nav>
+            <button id="theme-toggle" onclick="toggleTheme()">🌙</button>
         </div>
     </header>
 
@@ -38,6 +39,31 @@
                         <input id="math-expression" placeholder="Introduceți expresia, e.g. 2+3*4">
                         <button onclick="calculateMath()">Calculează</button>
                         <div id="math-result"></div>
+
+                        <h3>Conversii Unități</h3>
+                        <select id="unit-category">
+                            <option value="length">Lungime</option>
+                            <option value="weight">Greutate</option>
+                            <option value="volume">Volum</option>
+                            <option value="temperature">Temperatură</option>
+                        </select>
+                        <input id="unit-value" type="number" placeholder="Valoare">
+                        <select id="unit-from"></select>
+                        <select id="unit-to"></select>
+                        <button onclick="convertUnit()">Convertește</button>
+                        <div id="unit-result"></div>
+
+                        <h3>Calculator Fracții</h3>
+                        <input id="fraction1" placeholder="Fracție 1, e.g. 1/2">
+                        <select id="fraction-op">
+                            <option value="+">+</option>
+                            <option value="-">-</option>
+                            <option value="*">*</option>
+                            <option value="/">/</option>
+                        </select>
+                        <input id="fraction2" placeholder="Fracție 2, e.g. 1/3">
+                        <button onclick="calculateFraction()">Calculează</button>
+                        <div id="fraction-result"></div>
                     </div>
                     <div class="symbols">
                         <h3>Simboluri Utile</h3>
@@ -92,7 +118,20 @@
                     <button onclick="calculateChemistry()">Calculează</button>
                     <div id="chem-result"></div>
                 </div>
-                <!-- Add more chemistry sections -->
+                <div id="concentration-calc" style="display:none;">
+                    <input id="chem-volume" placeholder="Volum (L)">
+                    <input id="chem-mass" placeholder="Masă (g)">
+                    <button onclick="calculateConcentration()">Calculează Concentrație</button>
+                    <div id="conc-result"></div>
+                </div>
+
+                <h3>Tabel Periodic (Simplu)</h3>
+                <table class="periodic-table">
+                    <tr><td data-element="H">H</td><td data-element="He">He</td></tr>
+                    <tr><td data-element="Li">Li</td><td data-element="Be">Be</td><td data-element="B">B</td><td data-element="C">C</td><td data-element="N">N</td><td data-element="O">O</td><td data-element="F">F</td><td data-element="Ne">Ne</td></tr>
+                    <tr><td data-element="Na">Na</td><td data-element="Mg">Mg</td><td data-element="Al">Al</td><td data-element="Si">Si</td><td data-element="P">P</td><td data-element="S">S</td><td data-element="Cl">Cl</td><td data-element="Ar">Ar</td></tr>
+                </table>
+                <div id="element-info"></div>
             </div>
         </div>
     </section>
