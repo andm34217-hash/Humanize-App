@@ -1,5 +1,4 @@
 import re
-from sympy import symbols, expand
 
 def chemistry_calc(data):
     calc_type = data.get('type')
@@ -44,6 +43,7 @@ def physics_calc(data):
 def term_calc(data):
     expression = data.get('expression', '')
     try:
+        from sympy import symbols, expand
         x = symbols('x')
         expanded = expand(expression)
         return {"expanded": str(expanded)}
