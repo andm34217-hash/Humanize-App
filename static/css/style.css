@@ -35,6 +35,18 @@ footer { background: #333; color: white; padding: 20px 0; text-align: center; }
 .app-content { padding: 60px 0; background: #f8f9fa; }
 .app-content .container { max-width: 800px; }
 
+/* Tools content */
+.tools-content { padding: 60px 0; background: #f8f9fa; }
+.tabs { display: flex; justify-content: center; margin-bottom: 20px; }
+.tab-button { padding: 10px 20px; background: #e9ecef; border: none; cursor: pointer; margin: 0 5px; border-radius: 5px; }
+.tab-button.active { background: #007bff; color: white; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.math-container { display: flex; gap: 20px; }
+.calculator, .symbols { flex: 1; }
+.symbols table { width: 100%; }
+.symbols td { padding: 5px; text-align: center; }
+
 /* Responsive */
 @media (max-width: 768px) {
     .hero h2 { font-size: 2em; }
@@ -44,6 +56,10 @@ footer { background: #333; color: white; padding: 20px 0; text-align: center; }
     nav { margin-top: 1em; }
     .buttons { flex-direction: column; }
     .app-content .container { padding: 0 10px; }
+    .tabs { flex-direction: column; }
+    .tab-button { margin: 5px 0; }
+    .math-container { flex-direction: column; }
+    .tools-content .container { padding: 0 10px; }
 }
 
 /* App specific styles */

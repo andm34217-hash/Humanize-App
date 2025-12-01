@@ -11,6 +11,10 @@ def home():
 def app_page():
     return render_template('app.html')
 
+@app.route('/instrumente')
+def instrumente_page():
+    return render_template('instrumente.html')
+
 @app.route('/detect', methods=['POST'])
 def detect():
     text = request.form['text']
