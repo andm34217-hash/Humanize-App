@@ -6,39 +6,27 @@
 
 <p>Un instrument AI pentru studenți.</p>
 
-<section id="detect">
+<section id="ai-tools">
 
-    <h3>Detector AI</h3>
+    <h3>Instrumente AI</h3>
 
-    <textarea id="detect-text" placeholder="Introduceți textul pentru detectare"></textarea>
+    <textarea id="ai-text" placeholder="Introduceți textul aici"></textarea>
 
-    <button onclick="detectAI()">Detectează</button>
+    <div class="buttons">
+        <button onclick="detectAI()">Detectează AI</button>
+        <button onclick="summarize()">Rezuma</button>
+        <button onclick="rewrite()">Rescrie</button>
+    </div>
 
-    <div id="detect-result"></div>
+    <div id="ai-percentage">
+        <label>Procentaj AI:</label>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+        </div>
+        <span id="percentage-text">0%</span>
+    </div>
 
-</section>
-
-<section id="summary">
-
-    <h3>Rezumat Inteligent</h3>
-
-    <textarea id="summary-text" placeholder="Introduceți textul pentru rezumat"></textarea>
-
-    <button onclick="summarize()">Rezuma</button>
-
-    <div id="summary-result"></div>
-
-</section>
-
-<section id="rewrite">
-
-    <h3>Rescriere Inteligentă</h3>
-
-    <textarea id="rewrite-text" placeholder="Introduceți textul pentru rescriere"></textarea>
-
-    <button onclick="rewrite()">Rescrie</button>
-
-    <div id="rewrite-result"></div>
+    <div id="ai-result"></div>
 
 </section>
 
@@ -62,11 +50,12 @@
 
         <h4>Fizică - Kinematice</h4>
 
-        <input id="v0" placeholder="Viteză inițială">
-
-        <input id="a" placeholder="Accelerație">
-
-        <input id="t" placeholder="Timp">
+        <table>
+            <tr><td>Viteză inițială (v0):</td><td><input id="v0" placeholder="0"></td></tr>
+            <tr><td>Accelerație (a):</td><td><input id="a" placeholder="0"></td></tr>
+            <tr><td>Timp (t):</td><td><input id="t" placeholder="0"></td></tr>
+            <tr><td>Poziție finală (x):</td><td><input id="x" placeholder="0"></td></tr>
+        </table>
 
         <button onclick="calcPhysics()">Calculează</button>
 
@@ -76,9 +65,9 @@
 
     <div>
 
-        <h4>Termeni Matematici</h4>
+        <h4>Matematică - Expresie</h4>
 
-        <input id="expression" placeholder="Expresie, e.g. (x+1)^2">
+        <input id="expression" placeholder="Expresie, e.g. (x+1)^2, 2^3, 1/2">
 
         <button onclick="calcTerm()">Calculează</button>
 

@@ -6,3 +6,10 @@ section { margin: 2em 0; }
 textarea, input { display: block; margin: 0.5em 0; width: 100%; max-width: 500px; }
 button { padding: 0.5em; background: #007bff; color: white; border: none; cursor: pointer; }
 button:hover { background: #0056b3; }
+.buttons { display: flex; gap: 1em; margin: 1em 0; }
+#ai-percentage { margin: 1em 0; }
+.progress-bar { width: 100%; max-width: 500px; height: 20px; background: #f0f0f0; border: 1px solid #ccc; }
+.progress-fill { height: 100%; background: #007bff; transition: width 0.5s; }
+table { border-collapse: collapse; margin: 1em 0; }
+td { padding: 0.5em; border: 1px solid #ccc; }
+input[type="text"], input[type="number"] { width: 100px; }
