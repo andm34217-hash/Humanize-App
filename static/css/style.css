@@ -31,6 +31,10 @@ footer { background: #333; color: white; padding: 20px 0; text-align: center; }
 .social-links a { color: white; margin: 0 10px; text-decoration: none; }
 .social-links a:hover { text-decoration: underline; }
 
+/* App content */
+.app-content { padding: 60px 0; background: #f8f9fa; }
+.app-content .container { max-width: 800px; }
+
 /* Responsive */
 @media (max-width: 768px) {
     .hero h2 { font-size: 2em; }
@@ -38,6 +42,8 @@ footer { background: #333; color: white; padding: 20px 0; text-align: center; }
     .card { width: 90%; }
     header .container { flex-direction: column; }
     nav { margin-top: 1em; }
+    .buttons { flex-direction: column; }
+    .app-content .container { padding: 0 10px; }
 }
 
 /* App specific styles */
