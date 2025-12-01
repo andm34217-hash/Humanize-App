@@ -1,5 +1,12 @@
+let detectedText = '';
+let humanPercentage = 0;
+
 function detectAI() {
     const text = document.getElementById('ai-text').value;
+    if (text === detectedText && humanPercentage > 0) {
+        // Already detected this text
+        return;
+    }
     fetch('/detect', {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -8,16 +15,17 @@ function detectAI() {
     .then(response => response.json())
     .then(data => {
         if (data.percentage !== undefined) {
-            const percentage = data.percentage;
-            document.getElementById('progress-fill').style.width = percentage + '%';
-            document.getElementById('percentage-text').innerText = percentage + '%';
-            document.getElementById('ai-result').innerText = '';
+            humanPercentage = data.percentage;
+            detectedText = text;
+            document.getElementById('progress-fill').style.width = humanPercentage + '%';
+            document.getElementById('percentage-text').innerText = humanPercentage + '%';
+            document.getElementById('ai-error').innerText = '';
         } else {
-            document.getElementById('ai-result').innerText = 'Eroare: ' + (data.error || 'Necunoscut');
+            document.getElementById('ai-error').innerText = 'Eroare: ' + (data.error || 'Necunoscut');
         }
     })
     .catch(error => {
-        document.getElementById('ai-result').innerText = 'Eroare de rețea: ' + error.message;
+        document.getElementById('ai-error').innerText = 'Eroare de rețea: ' + error.message;
     });
 }
 
