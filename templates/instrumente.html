@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <header>
+    <header class="fixed-header">
         <div class="container">
             <div class="logo">
                 <h1>Humanize</h1>
@@ -21,16 +21,15 @@
             </nav>
             <button id="theme-toggle" onclick="toggleTheme()">🌙</button>
         </div>
+        <div class="subject-tabs">
+            <button class="tab-button active" onclick="showTab('math')">Matematică</button>
+            <button class="tab-button" onclick="showTab('physics')">Fizică</button>
+            <button class="tab-button" onclick="showTab('chemistry')">Chimie</button>
+        </div>
     </header>
 
     <section class="tools-content">
         <div class="container">
-            <h2>Instrumente Științifice</h2>
-            <div class="tabs">
-                <button class="tab-button active" onclick="showTab('math')">Matematică</button>
-                <button class="tab-button" onclick="showTab('physics')">Fizică</button>
-                <button class="tab-button" onclick="showTab('chemistry')">Chimie</button>
-            </div>
 
             <div id="math-tab" class="tab-content active">
                 <div class="math-container">

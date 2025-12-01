@@ -23,11 +23,14 @@ body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; line-height: 1.6
 
 /* Header */
 header { background: var(--header-bg); padding: 1em 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: background 0.3s; }
+header.fixed-header { position: fixed; top: 0; width: 100%; z-index: 1000; }
 header .container { display: flex; justify-content: space-between; align-items: center; }
 .logo h1 { margin: 0; color: #007bff; }
 nav a { color: var(--text-color); margin: 0 1em; text-decoration: none; font-weight: bold; }
 nav a:hover { color: #007bff; }
 #theme-toggle { background: none; border: none; font-size: 1.5em; cursor: pointer; color: var(--text-color); }
+.subject-tabs { display: flex; justify-content: center; background: var(--card-bg); padding: 10px 0; border-top: 1px solid var(--border-color); }
+body { padding-top: 120px; } /* Adjust for fixed header */
 
 /* Hero */
 .hero { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 100px 0; text-align: center; }
