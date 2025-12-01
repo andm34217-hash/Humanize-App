@@ -67,7 +67,8 @@ footer { background: #333; color: white; padding: 20px 0; text-align: center; }
 .math-container { display: flex; gap: 20px; }
 .calculator, .symbols { flex: 1; }
 .symbols table { width: 100%; border-collapse: collapse; }
-.symbols td { padding: 5px; text-align: center; border: 1px solid var(--border-color); }
+.symbols td { padding: 5px; text-align: center; border: 1px solid var(--border-color); cursor: pointer; }
+.symbols td:first-child:hover { background: var(--button-bg); color: white; }
 .periodic-table { border-collapse: collapse; margin: 20px 0; }
 .periodic-table td { width: 40px; height: 40px; text-align: center; border: 1px solid var(--border-color); cursor: pointer; background: var(--card-bg); }
 .periodic-table td:hover { background: var(--button-bg); color: white; }

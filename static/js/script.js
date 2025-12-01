@@ -271,6 +271,17 @@ function formatFraction(frac) {
     return `${frac.num}/${frac.den}`;
 }
 
+// Insert symbol into math input
+function insertSymbol(symbol) {
+    const input = document.getElementById('math-expression');
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+    const text = input.value;
+    input.value = text.slice(0, start) + symbol + text.slice(end);
+    input.focus();
+    input.setSelectionRange(start + symbol.length, start + symbol.length);
+}
+
 // Math calculator
 function calculateMath() {
     const expression = document.getElementById('math-expression').value;
