@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Bun venit la Humanize</h2>
+
+<p>Un instrument AI pentru studenți.</p>
+
+<section id="ai-tools">
+
+    <h3>Instrumente AI</h3>
+
+    <textarea id="ai-text" placeholder="Introduceți textul aici"></textarea>
+
+    <div class="buttons">
+        <button onclick="detectAI()">Detectează AI</button>
+        <button onclick="summarize()">Rezuma</button>
+        <button onclick="rewrite()">Rescrie</button>
+    </div>
+
+    <div id="ai-percentage">
+        <label>Procentaj AI:</label>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+        </div>
+        <span id="percentage-text">0%</span>
+    </div>
+
+    <div id="ai-result"></div>
+
+</section>
+
+<section id="calculators">
+
+    <h3>Calculatoare</h3>
+
+    <div>
+
+        <h4>Chimie - Masă Molară</h4>
+
+        <input id="formula" placeholder="Formula, e.g. H2O">
+
+        <button onclick="calcChemistry()">Calculează</button>
+
+        <div id="chem-result"></div>
+
+    </div>
+
+    <div>
+
+        <h4>Fizică - Kinematice</h4>
+
+        <table>
+            <tr><td>Viteză inițială (v0):</td><td><input id="v0" placeholder="0"></td></tr>
+            <tr><td>Accelerație (a):</td><td><input id="a" placeholder="0"></td></tr>
+            <tr><td>Timp (t):</td><td><input id="t" placeholder="0"></td></tr>
+            <tr><td>Poziție finală (x):</td><td><input id="x" placeholder="0"></td></tr>
+        </table>
+
+        <button onclick="calcPhysics()">Calculează</button>
+
+        <div id="phys-result"></div>
+
+    </div>
+
+    <div>
+
+        <h4>Matematică - Expresie</h4>
+
+        <input id="expression" placeholder="Expresie, e.g. (x+1)^2, 2^3, 1/2">
+
+        <button onclick="calcTerm()">Calculează</button>
+
+        <div id="term-result"></div>
+
+    </div>
+
+</section>
+
+{% endblock %}

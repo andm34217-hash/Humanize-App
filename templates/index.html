@@ -1,80 +1,63 @@
-{% extends "base.html" %}
-
-{% block content %}
-
-<h2>Bun venit la Humanize</h2>
-
-<p>Un instrument AI pentru studenți.</p>
-
-<section id="ai-tools">
-
-    <h3>Instrumente AI</h3>
-
-    <textarea id="ai-text" placeholder="Introduceți textul aici"></textarea>
-
-    <div class="buttons">
-        <button onclick="detectAI()">Detectează AI</button>
-        <button onclick="summarize()">Rezuma</button>
-        <button onclick="rewrite()">Rescrie</button>
-    </div>
-
-    <div id="ai-percentage">
-        <label>Procentaj AI:</label>
-        <div class="progress-bar">
-            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Humanize - AI Educational Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Humanize</h1>
+            </div>
+            <nav>
+                <a href="/">Acasă</a>
+                <a href="/app">Aplicație</a>
+                <a href="#about">Despre</a>
+                <a href="#contact">Contact</a>
+            </nav>
         </div>
-        <span id="percentage-text">0%</span>
-    </div>
+    </header>
 
-    <div id="ai-result"></div>
+    <section class="hero">
+        <div class="container">
+            <h2>Îmbunătățește-ți învățarea cu AI</h2>
+            <p>Instrumente inteligente pentru detectarea AI, rezumarea textelor și calculatoare științifice pentru studenți.</p>
+            <a href="/app" class="btn-primary">Începe acum</a>
+        </div>
+    </section>
 
-</section>
+    <section class="features">
+        <div class="container">
+            <div class="card">
+                <img src="https://via.placeholder.com/300x200?text=AI+Detection" alt="AI Detection">
+                <h3>Detectare AI</h3>
+                <p>Analizează texte pentru a determina procentul de conținut generat de AI, cu o bară vizuală intuitivă.</p>
+            </div>
+            <div class="card">
+                <img src="https://via.placeholder.com/300x200?text=Text+Processing" alt="Text Processing">
+                <h3>Procesare Text</h3>
+                <p>Rezuma și rescrie texte folosind inteligență artificială avansată pentru o înțelegere mai bună.</p>
+            </div>
+            <div class="card">
+                <img src="https://via.placeholder.com/300x200?text=Calculators" alt="Calculators">
+                <h3>Calculatoare Științifice</h3>
+                <p>Calculează mase moleculare, ecuații fizice și expresii matematice cu ușurință.</p>
+            </div>
+        </div>
+    </section>
 
-<section id="calculators">
-
-    <h3>Calculatoare</h3>
-
-    <div>
-
-        <h4>Chimie - Masă Molară</h4>
-
-        <input id="formula" placeholder="Formula, e.g. H2O">
-
-        <button onclick="calcChemistry()">Calculează</button>
-
-        <div id="chem-result"></div>
-
-    </div>
-
-    <div>
-
-        <h4>Fizică - Kinematice</h4>
-
-        <table>
-            <tr><td>Viteză inițială (v0):</td><td><input id="v0" placeholder="0"></td></tr>
-            <tr><td>Accelerație (a):</td><td><input id="a" placeholder="0"></td></tr>
-            <tr><td>Timp (t):</td><td><input id="t" placeholder="0"></td></tr>
-            <tr><td>Poziție finală (x):</td><td><input id="x" placeholder="0"></td></tr>
-        </table>
-
-        <button onclick="calcPhysics()">Calculează</button>
-
-        <div id="phys-result"></div>
-
-    </div>
-
-    <div>
-
-        <h4>Matematică - Expresie</h4>
-
-        <input id="expression" placeholder="Expresie, e.g. (x+1)^2, 2^3, 1/2">
-
-        <button onclick="calcTerm()">Calculează</button>
-
-        <div id="term-result"></div>
-
-    </div>
-
-</section>
-
-{% endblock %}
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Humanize. Toate drepturile rezervate.</p>
+            <div class="social-links">
+                <a href="#">Facebook</a>
+                <a href="#">Twitter</a>
+                <a href="#">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

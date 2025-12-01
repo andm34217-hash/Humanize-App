@@ -7,6 +7,10 @@ from calculators import chemistry_calc, physics_calc, term_calc
 def home():
     return render_template('index.html')
 
+@app.route('/app')
+def app_page():
+    return render_template('app.html')
+
 @app.route('/detect', methods=['POST'])
 def detect():
     text = request.form['text']
