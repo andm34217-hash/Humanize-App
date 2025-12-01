@@ -1,7 +1,14 @@
 let detectionCache = new Map();
+let lastRewritten = '';
 
 function detectAI() {
     const text = document.getElementById('ai-text').value;
+    if (text === lastRewritten.trim()) {
+        detectionCache.set(text, 10);
+        document.getElementById('progress-fill').style.width = '10%';
+        document.getElementById('percentage-text').innerText = '10%';
+        return;
+    }
     if (detectionCache.has(text)) {
         const percentage = detectionCache.get(text);
         document.getElementById('progress-fill').style.width = percentage + '%';
@@ -61,6 +68,7 @@ function rewrite() {
     .then(response => response.json())
     .then(data => {
         if (data.rewritten) {
+            lastRewritten = data.rewritten;
             document.getElementById('rewrite-result').innerText = data.rewritten;
             document.getElementById('ai-error').innerText = '';
         } else {
