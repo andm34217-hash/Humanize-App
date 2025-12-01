@@ -2,7 +2,8 @@ import sys
 import os
 
 # Add the parent directory to the path so we can import the app
-sys.path.insert(0, os.path.dirname(__file__) + '/..')
+parent_dir = os.path.join(os.path.dirname(__file__), '..')
+sys.path.insert(0, parent_dir)
 
 from app import app
 

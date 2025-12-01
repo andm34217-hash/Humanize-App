@@ -1,7 +1,7 @@
 from flask import render_template, request, jsonify
-from app import app
-from app.ai_functions import detect_ai, summarize_text, rewrite_text
-from app.calculators import chemistry_calc, physics_calc, term_calc
+from . import app
+from .ai_functions import detect_ai, summarize_text, rewrite_text
+from .calculators import chemistry_calc, physics_calc, term_calc
 
 @app.route('/')
 def home():
