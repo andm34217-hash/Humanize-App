@@ -6,6 +6,7 @@ parent_dir = os.path.join(os.path.dirname(__file__), '..')
 sys.path.insert(0, parent_dir)
 
 from app import app
+from app import routes
 
 # Vercel expects the app to be named 'app'
 application = app

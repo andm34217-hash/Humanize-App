@@ -1,5 +1,5 @@
 from flask import render_template, request, jsonify
-from . import app
+from app import app
 from .ai_functions import detect_ai, summarize_text, rewrite_text
 from .calculators import chemistry_calc, physics_calc, term_calc
 
