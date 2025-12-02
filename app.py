@@ -10,6 +10,7 @@ app = Flask(__name__, template_folder='templates', static_folder='static')
 
 # Configuration
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
+print(f"DATABASE_URL: {app.config['SQLALCHEMY_DATABASE_URI']}")
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///humanize.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
