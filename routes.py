@@ -92,6 +92,9 @@ def signup():
             flash('Password must be at least 6 characters long', 'error')
             return redirect(url_for('signup'))
 
+        # Ensure database tables exist
+        db.create_all()
+
         # Check if user already exists
         try:
             existing_user = User.query.filter_by(email=email).first()
