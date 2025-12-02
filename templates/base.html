@@ -23,8 +23,14 @@
                 </div>
                 <div class="nav-actions">
                     <button id="theme-toggle"><i class="fas fa-moon"></i></button>
-                    <a href="/login" class="btn-secondary">Sign In</a>
-                    <a href="/signup" class="btn-primary">Get Started</a>
+                    {% if session.get('user_id') %}
+                        <span class="user-greeting">Hi, {{ session.get('user_name') }}!</span>
+                        <a href="/dashboard" class="btn-secondary">Dashboard</a>
+                        <a href="/logout" class="btn-secondary">Logout</a>
+                    {% else %}
+                        <a href="/login" class="btn-secondary">Sign In</a>
+                        <a href="/signup" class="btn-primary">Get Started</a>
+                    {% endif %}
                 </div>
             </div>
         </nav>
