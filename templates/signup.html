@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Humanize - Sign Up{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="container">
+        <div class="auth-card">
+            <h1>Create Account</h1>
+            <p>Join thousands of students and professionals using Humanize.</p>
+            <form class="auth-form">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn-primary">Create Account</button>
+            </form>
+            <p class="auth-link">Already have an account? <a href="/login">Sign in</a></p>
+        </div>
+    </div>
+</section>
+{% endblock %}

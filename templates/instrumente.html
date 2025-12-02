@@ -1,158 +1,188 @@
-<!DOCTYPE html>
-<html lang="ro">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Humanize - Instrumente AI</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-    <header class="fixed-header">
-        <div class="container">
-            <div class="logo">
-                <h1>Humanize</h1>
-            </div>
-            <nav>
-                <a href="/">Acasă</a>
-                <a href="/app">Aplicație</a>
-                <a href="/instrumente">Instrumente</a>
-                <a href="#about">Despre</a>
-                <a href="#contact">Contact</a>
-            </nav>
-            <button id="theme-toggle" onclick="toggleTheme()">🌙</button>
+{% extends "base.html" %}
+
+{% block title %}Humanize - Academic Calculators{% endblock %}
+
+{% block content %}
+<section class="calculators-section">
+    <div class="container">
+        <div class="section-header">
+            <h1>Academic Calculators</h1>
+            <p>Essential calculation tools for mathematics, physics, and chemistry students</p>
         </div>
+
         <div class="subject-tabs">
-            <button class="tab-button active" onclick="showTab('math')">Matematică</button>
-            <button class="tab-button" onclick="showTab('physics')">Fizică</button>
-            <button class="tab-button" onclick="showTab('chemistry')">Chimie</button>
+            <button class="subject-tab active" onclick="showTab('math')">
+                <i class="fas fa-calculator"></i>
+                Mathematics
+            </button>
+            <button class="subject-tab" onclick="showTab('physics')">
+                <i class="fas fa-atom"></i>
+                Physics
+            </button>
+            <button class="subject-tab" onclick="showTab('chemistry')">
+                <i class="fas fa-flask"></i>
+                Chemistry
+            </button>
         </div>
-    </header>
 
-    <section class="tools-content">
-        <div class="container">
+        <div id="math-tab" class="subject-content active">
+            <div class="calc-grid">
+                <div class="calc-card">
+                    <h3>Expression Calculator</h3>
+                    <input id="math-expression" placeholder="Enter expression, e.g. 2+3*4, sin(30), sqrt(16)">
+                    <button class="btn-primary" onclick="calculateMath()">Calculate</button>
+                    <div id="math-result" class="calc-result"></div>
+                </div>
 
-            <div id="math-tab" class="tab-content active">
-                <div class="math-container">
-                    <div class="calculator">
-                        <h3>Calculator Matematic</h3>
-                        <input id="math-expression" placeholder="Introduceți expresia, e.g. 2+3*4">
-                        <button onclick="calculateMath()">Calculează</button>
-                        <div id="math-result"></div>
-
-                        <h3>Conversii Unități</h3>
-                        <select id="unit-category">
-                            <option value="length">Lungime</option>
-                            <option value="weight">Greutate</option>
-                            <option value="volume">Volum</option>
-                            <option value="temperature">Temperatură</option>
-                        </select>
-                        <input id="unit-value" type="number" placeholder="Valoare">
+                <div class="calc-card">
+                    <h3>Unit Converter</h3>
+                    <select id="unit-category">
+                        <option value="length">Length</option>
+                        <option value="weight">Weight</option>
+                        <option value="volume">Volume</option>
+                        <option value="temperature">Temperature</option>
+                    </select>
+                    <input id="unit-value" type="number" placeholder="Value">
+                    <div class="unit-selects">
                         <select id="unit-from"></select>
                         <select id="unit-to"></select>
-                        <button onclick="convertUnit()">Convertește</button>
-                        <div id="unit-result"></div>
+                    </div>
+                    <button class="btn-primary" onclick="convertUnit()">Convert</button>
+                    <div id="unit-result" class="calc-result"></div>
+                </div>
 
-                        <h3>Calculator Fracții</h3>
-                        <input id="fraction1" placeholder="Fracție 1, e.g. 1/2">
+                <div class="calc-card">
+                    <h3>Fraction Calculator</h3>
+                    <div class="fraction-inputs">
+                        <input id="fraction1" placeholder="Fraction 1, e.g. 1/2">
                         <select id="fraction-op">
                             <option value="+">+</option>
                             <option value="-">-</option>
                             <option value="*">*</option>
                             <option value="/">/</option>
                         </select>
-                        <input id="fraction2" placeholder="Fracție 2, e.g. 1/3">
-                        <button onclick="calculateFraction()">Calculează</button>
-                        <div id="fraction-result"></div>
+                        <input id="fraction2" placeholder="Fraction 2, e.g. 1/3">
                     </div>
-                    <div class="symbols">
-                        <h3>Simboluri Utile (Click pentru a insera)</h3>
-                        <table>
-                            <tr><td onclick="insertSymbol('+')">+</td><td>Adunare</td></tr>
-                            <tr><td onclick="insertSymbol('-')">-</td><td>Scădere</td></tr>
-                            <tr><td onclick="insertSymbol('*')">*</td><td>Înmulțire</td></tr>
-                            <tr><td onclick="insertSymbol('/')">/</td><td>Împărțire</td></tr>
-                            <tr><td onclick="insertSymbol('**')">**</td><td>Ridicare la putere</td></tr>
-                            <tr><td onclick="insertSymbol('sqrt()')">sqrt()</td><td>Rădăcină pătrată</td></tr>
-                            <tr><td onclick="insertSymbol('sin()')">sin()</td><td>Sinus</td></tr>
-                            <tr><td onclick="insertSymbol('cos()')">cos()</td><td>Cosinus</td></tr>
-                            <tr><td onclick="insertSymbol('tan()')">tan()</td><td>Tangentă</td></tr>
-                            <tr><td onclick="insertSymbol('log()')">log()</td><td>Logaritm</td></tr>
-                            <tr><td onclick="insertSymbol('exp()')">exp()</td><td>Exponentială</td></tr>
-                            <tr><td onclick="insertSymbol('diff()')">diff()</td><td>Derivată</td></tr>
-                            <tr><td onclick="insertSymbol('integrate()')">integrate()</td><td>Integrală</td></tr>
-                            <tr><td onclick="insertSymbol('pi')">pi</td><td>Numărul π</td></tr>
-                            <tr><td onclick="insertSymbol('e')">e</td><td>Numărul e</td></tr>
-                            <tr><td onclick="insertSymbol('I')">I</td><td>Unitate imaginară</td></tr>
-                            <tr><td onclick="insertSymbol('Matrix()')">Matrix()</td><td>Matrice</td></tr>
-                        </table>
+                    <button class="btn-primary" onclick="calculateFraction()">Calculate</button>
+                    <div id="fraction-result" class="calc-result"></div>
+                </div>
+
+                <div class="calc-card symbols-card">
+                    <h3>Math Symbols</h3>
+                    <p>Click symbols to insert into calculator</p>
+                    <div class="symbols-grid">
+                        <button onclick="insertSymbol('+')">+</button>
+                        <button onclick="insertSymbol('-')">-</button>
+                        <button onclick="insertSymbol('*')">*</button>
+                        <button onclick="insertSymbol('/')">/</button>
+                        <button onclick="insertSymbol('**')">**</button>
+                        <button onclick="insertSymbol('sqrt()')">√</button>
+                        <button onclick="insertSymbol('sin()')">sin</button>
+                        <button onclick="insertSymbol('cos()')">cos</button>
+                        <button onclick="insertSymbol('tan()')">tan</button>
+                        <button onclick="insertSymbol('log()')">log</button>
+                        <button onclick="insertSymbol('pi')">π</button>
+                        <button onclick="insertSymbol('e')">e</button>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div id="physics-tab" class="tab-content">
-                <h3>Calculator Fizică</h3>
-                <div class="physics-options">
-                    <select id="physics-type">
-                        <option value="kinematic">Kinematice</option>
-                        <option value="energy">Energie</option>
-                        <option value="force">Forță</option>
-                    </select>
-                </div>
-                <div id="kinematic-calc">
-                    <table>
-                        <tr><td>Viteză inițială (v0, m/s):</td><td><input id="phys-v0" placeholder="0"></td></tr>
-                        <tr><td>Accelerație (a, m/s²):</td><td><input id="phys-a" placeholder="0"></td></tr>
-                        <tr><td>Timp (t, s):</td><td><input id="phys-t" placeholder="0"></td></tr>
-                        <tr><td>Poziție finală (x, m):</td><td><input id="phys-x" placeholder="0"></td></tr>
-                    </table>
-                    <button onclick="calculatePhysics()">Calculează</button>
-                    <div id="phys-result"></div>
-                </div>
-                <!-- Add more physics sections as needed -->
-            </div>
-
-            <div id="chemistry-tab" class="tab-content">
-                <h3>Calculator Chimie</h3>
-                <div class="chemistry-options">
-                    <select id="chemistry-type">
-                        <option value="molar_mass">Masă Molară</option>
-                        <option value="concentration">Concentrație</option>
-                    </select>
-                </div>
-                <div id="molar-mass-calc">
-                    <input id="chem-formula" placeholder="Formula, e.g. H2O">
-                    <button onclick="calculateChemistry()">Calculează</button>
-                    <div id="chem-result"></div>
-                </div>
-                <div id="concentration-calc" style="display:none;">
-                    <input id="chem-volume" placeholder="Volum (L)">
-                    <input id="chem-mass" placeholder="Masă (g)">
-                    <button onclick="calculateConcentration()">Calculează Concentrație</button>
-                    <div id="conc-result"></div>
+        <div id="physics-tab" class="subject-content">
+            <div class="calc-grid">
+                <div class="calc-card">
+                    <h3>Kinematics Calculator</h3>
+                    <div class="physics-inputs">
+                        <div class="input-group">
+                            <label>Initial Velocity (v₀, m/s)</label>
+                            <input id="phys-v0" type="number" placeholder="0">
+                        </div>
+                        <div class="input-group">
+                            <label>Acceleration (a, m/s²)</label>
+                            <input id="phys-a" type="number" placeholder="0">
+                        </div>
+                        <div class="input-group">
+                            <label>Time (t, s)</label>
+                            <input id="phys-t" type="number" placeholder="0">
+                        </div>
+                        <div class="input-group">
+                            <label>Displacement (x, m)</label>
+                            <input id="phys-x" type="number" placeholder="0">
+                        </div>
+                    </div>
+                    <button class="btn-primary" onclick="calculatePhysics()">Calculate</button>
+                    <div id="phys-result" class="calc-result"></div>
                 </div>
 
-                <h3>Tabel Periodic (Simplu)</h3>
-                <table class="periodic-table">
-                    <tr><td data-element="H">H</td><td data-element="He">He</td></tr>
-                    <tr><td data-element="Li">Li</td><td data-element="Be">Be</td><td data-element="B">B</td><td data-element="C">C</td><td data-element="N">N</td><td data-element="O">O</td><td data-element="F">F</td><td data-element="Ne">Ne</td></tr>
-                    <tr><td data-element="Na">Na</td><td data-element="Mg">Mg</td><td data-element="Al">Al</td><td data-element="Si">Si</td><td data-element="P">P</td><td data-element="S">S</td><td data-element="Cl">Cl</td><td data-element="Ar">Ar</td></tr>
-                </table>
-                <div id="element-info"></div>
+                <div class="calc-card">
+                    <h3>Physics Formulas</h3>
+                    <div class="formula-list">
+                        <div class="formula">
+                            <strong>v = v₀ + at</strong>
+                            <p>Final velocity</p>
+                        </div>
+                        <div class="formula">
+                            <strong>x = v₀t + ½at²</strong>
+                            <p>Displacement</p>
+                        </div>
+                        <div class="formula">
+                            <strong>v² = v₀² + 2ax</strong>
+                            <p>Velocity squared</p>
+                        </div>
+                        <div class="formula">
+                            <strong>F = ma</strong>
+                            <p>Newton's second law</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Humanize. Toate drepturile rezervate.</p>
-            <div class="social-links">
-                <a href="#">Facebook</a>
-                <a href="#">Twitter</a>
-                <a href="#">LinkedIn</a>
+        <div id="chemistry-tab" class="subject-content">
+            <div class="calc-grid">
+                <div class="calc-card">
+                    <h3>Molar Mass Calculator</h3>
+                    <input id="chem-formula" placeholder="Chemical formula, e.g. H2O">
+                    <button class="btn-primary" onclick="calculateChemistry()">Calculate</button>
+                    <div id="chem-result" class="calc-result"></div>
+                </div>
+
+                <div class="calc-card">
+                    <h3>Concentration Calculator</h3>
+                    <div class="concentration-inputs">
+                        <input id="chem-mass" placeholder="Mass (g)">
+                        <input id="chem-volume" placeholder="Volume (L)">
+                    </div>
+                    <button class="btn-primary" onclick="calculateConcentration()">Calculate Concentration</button>
+                    <div id="conc-result" class="calc-result"></div>
+                </div>
+
+                <div class="calc-card periodic-card">
+                    <h3>Periodic Table</h3>
+                    <div class="periodic-table">
+                        <div class="element" data-element="H">H</div>
+                        <div class="element" data-element="He">He</div>
+                        <div class="element" data-element="Li">Li</div>
+                        <div class="element" data-element="Be">Be</div>
+                        <div class="element" data-element="B">B</div>
+                        <div class="element" data-element="C">C</div>
+                        <div class="element" data-element="N">N</div>
+                        <div class="element" data-element="O">O</div>
+                        <div class="element" data-element="F">F</div>
+                        <div class="element" data-element="Ne">Ne</div>
+                        <div class="element" data-element="Na">Na</div>
+                        <div class="element" data-element="Mg">Mg</div>
+                        <div class="element" data-element="Al">Al</div>
+                        <div class="element" data-element="Si">Si</div>
+                        <div class="element" data-element="P">P</div>
+                        <div class="element" data-element="S">S</div>
+                        <div class="element" data-element="Cl">Cl</div>
+                        <div class="element" data-element="Ar">Ar</div>
+                    </div>
+                    <div id="element-info" class="calc-result"></div>
+                </div>
             </div>
         </div>
-    </footer>
-
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-</body>
-</html>
+    </div>
+</section>
+{% endblock %}

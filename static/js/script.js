@@ -1,6 +1,62 @@
 let detectionCache = new Map();
 let lastRewritten = '';
 
+function humanizeDemo() {
+    const text = document.getElementById('demo-text').value;
+    const output = document.getElementById('demo-output');
+    const button = document.getElementById('humanize-btn');
+
+    if (!text.trim()) {
+        showNotification('Please enter some text to humanize', 'error');
+        return;
+    }
+
+    // Show loading state
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Humanizing...';
+    button.disabled = true;
+    output.classList.add('loading');
+    output.innerHTML = '<p>Processing your text...</p>';
+
+    // Simulate API call (replace with actual fetch when backend is ready)
+    setTimeout(() => {
+        // Mock humanized text
+        const humanizedText = text.replace(/AI-generated/g, 'human-crafted')
+                                  .replace(/robotic/g, 'natural')
+                                  .replace(/artificial/g, 'authentic')
+                                  .replace(/lacks/g, 'maintains')
+                                  .replace(/transform/g, 'enhance');
+
+        output.innerHTML = `<p>${humanizedText}</p>`;
+        output.classList.remove('loading');
+        button.innerHTML = '<i class="fas fa-magic"></i> Humanize Text';
+        button.disabled = false;
+
+        showNotification('Text humanized successfully!', 'success');
+    }, 2000);
+}
+
+function showNotification(message, type = 'info') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+        ${message}
+    `;
+
+    // Add to page
+    document.body.appendChild(notification);
+
+    // Show with animation
+    setTimeout(() => notification.classList.add('show'), 100);
+
+    // Remove after 3 seconds
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => document.body.removeChild(notification), 300);
+    }, 3000);
+}
+
 function detectAI() {
     const text = document.getElementById('ai-text').value;
     if (text === lastRewritten.trim()) {
@@ -159,11 +215,24 @@ function toggleTheme() {
     document.body.classList.toggle('dark');
     const button = document.getElementById('theme-toggle');
     if (document.body.classList.contains('dark')) {
-        button.innerText = '☀️';
+        button.innerHTML = '<i class="fas fa-sun"></i>';
+        localStorage.setItem('theme', 'dark');
     } else {
-        button.innerText = '🌙';
+        button.innerHTML = '<i class="fas fa-moon"></i>';
+        localStorage.setItem('theme', 'light');
     }
 }
+
+// Initialize theme on load
+document.addEventListener('DOMContentLoaded', function() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark');
+        document.getElementById('theme-toggle').innerHTML = '<i class="fas fa-sun"></i>';
+    } else {
+        document.getElementById('theme-toggle').innerHTML = '<i class="fas fa-moon"></i>';
+    }
+});
 
 // Unit conversions
 const units = {
@@ -391,3 +460,124 @@ document.getElementById('chemistry-type').addEventListener('change', function() 
     document.getElementById('molar-mass-calc').style.display = type === 'molar_mass' ? 'block' : 'none';
     document.getElementById('concentration-calc').style.display = type === 'concentration' ? 'block' : 'none';
 });
+
+// New app functions
+function switchTool(toolName) {
+    // Hide all tool contents
+    const tools = document.querySelectorAll('.tool-content');
+    tools.forEach(tool => tool.classList.remove('active'));
+
+    // Remove active class from all tabs
+    const tabs = document.querySelectorAll('.tab-btn');
+    tabs.forEach(tab => tab.classList.remove('active'));
+
+    // Show selected tool
+    document.getElementById(toolName + '-tool').classList.add('active');
+
+    // Add active class to clicked tab
+    event.target.classList.add('active');
+}
+
+function switchCalculator(calcName) {
+    // Hide all calculator contents
+    const calcs = document.querySelectorAll('.calc-content');
+    calcs.forEach(calc => calc.classList.remove('active'));
+
+    // Remove active class from all calc tabs
+    const tabs = document.querySelectorAll('.calc-tab');
+    tabs.forEach(tab => tab.classList.remove('active'));
+
+    // Show selected calculator
+    document.getElementById(calcName + '-calc').classList.add('active');
+
+    // Add active class to clicked tab
+    event.target.classList.add('active');
+}
+
+function clearText(textareaId) {
+    document.getElementById(textareaId).value = '';
+    showNotification('Text cleared', 'info');
+}
+
+function copyToClipboard(elementId) {
+    const element = document.getElementById(elementId);
+    const text = element.textContent || element.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        showNotification('Text copied to clipboard!', 'success');
+    }).catch(() => {
+        showNotification('Failed to copy text', 'error');
+    });
+}
+
+function downloadText(elementId, filename) {
+    const element = document.getElementById(elementId);
+    const text = element.textContent || element.innerText;
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showNotification('Text downloaded!', 'success');
+}
+
+function saveToHistory(toolType) {
+    // Mock save functionality - in real app, this would save to backend
+    showNotification('Text saved to history!', 'success');
+}
+
+function humanizeText() {
+    const text = document.getElementById('humanizer-text').value;
+    const output = document.getElementById('humanizer-output');
+
+    if (!text.trim()) {
+        showNotification('Please enter some text to humanize', 'error');
+        return;
+    }
+
+    output.innerHTML = '<p>Processing...</p>';
+    output.classList.add('loading');
+
+    // Mock humanization - replace with actual API call
+    setTimeout(() => {
+        const humanized = text.replace(/AI-generated/g, 'human-crafted')
+                              .replace(/robotic/g, 'natural')
+                              .replace(/artificial/g, 'authentic');
+        output.innerHTML = `<p>${humanized}</p>`;
+        output.classList.remove('loading');
+        showNotification('Text humanized successfully!', 'success');
+    }, 1500);
+}
+
+function rewriteText() {
+    const text = document.getElementById('rewriter-text').value;
+    const mode = document.getElementById('rewrite-mode').value;
+    const output = document.getElementById('rewriter-output');
+
+    if (!text.trim()) {
+        showNotification('Please enter some text to process', 'error');
+        return;
+    }
+
+    output.innerHTML = '<p>Processing...</p>';
+    output.classList.add('loading');
+
+    // Mock processing based on mode
+    setTimeout(() => {
+        let result = text;
+        if (mode === 'summarize') {
+            result = 'Summary: ' + text.substring(0, 100) + '...';
+        } else if (mode === 'paraphrase') {
+            result = text.replace(/is/g, 'appears to be').replace(/are/g, 'seem to be');
+        } else {
+            result = text.replace(/The/g, 'This').replace(/A/g, 'One');
+        }
+
+        output.innerHTML = `<p>${result}</p>`;
+        output.classList.remove('loading');
+        showNotification('Text processed successfully!', 'success');
+    }, 1500);
+}

@@ -1,15 +1,74 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Humanize - AI Educational Tool</title>
+    <title>{% block title %}Humanize - AI Writing & Academic Tools{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <a href="/">Humanize</a>
+                </div>
+                <div class="nav-links">
+                    <a href="/">Home</a>
+                    <a href="/app">Tools</a>
+                    <a href="/dashboard">Dashboard</a>
+                    <a href="/pricing">Pricing</a>
+                </div>
+                <div class="nav-actions">
+                    <button id="theme-toggle"><i class="fas fa-moon"></i></button>
+                    <a href="/login" class="btn-secondary">Sign In</a>
+                    <a href="/signup" class="btn-primary">Get Started</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
     <main>
         {% block content %}{% endblock %}
     </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Humanize</h3>
+                    <p>AI-powered tools for smarter writing and learning.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Tools</h4>
+                    <a href="/app">AI Humanizer</a>
+                    <a href="/app">AI Detector</a>
+                    <a href="/app">Text Rewriter</a>
+                    <a href="/instrumente">Calculators</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <a href="/about">About</a>
+                    <a href="/contact">Contact</a>
+                    <a href="/privacy">Privacy</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Humanize. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
