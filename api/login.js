@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-// Path to users.json
-const usersFile = path.join(__dirname, '..', 'users.json');
+// Path to users.json (use /tmp for Vercel)
+const usersFile = path.join('/tmp', 'users.json');
 
 export default function handler(req, res) {
     if (req.method !== 'POST') {
