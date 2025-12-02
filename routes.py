@@ -79,60 +79,42 @@ def privacy():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        print("Signup POST request received")
         name = request.form.get('name')
         email = request.form.get('email')
         password = request.form.get('password')
-        print(f"Form data: name={name}, email={email}, password={'*' * len(password) if password else None}")
 
         # Validate input
         if not all([name, email, password]):
-            print("Validation failed: missing fields")
             flash('All fields are required', 'error')
             return redirect(url_for('signup'))
 
         if len(password) < 6:
-            print("Validation failed: password too short")
             flash('Password must be at least 6 characters long', 'error')
             return redirect(url_for('signup'))
 
         # Check if user already exists
-        print("Checking for existing user")
         try:
             existing_user = User.query.filter_by(email=email).first()
         except Exception as e:
-            print(f"Database error during user check: {e}")
-            import traceback
-            traceback.print_exc()
             flash('Database error. Please try again.', 'error')
             return redirect(url_for('signup'))
         if existing_user:
-            print("User already exists")
             flash('Email already registered', 'error')
             return redirect(url_for('signup'))
 
         # Create new user
-        print("Creating new user")
         user = User(name=name, email=email, confirmed=True)  # Temporarily set confirmed=True for testing
         user.set_password(password)
-        print("User created and password set")
 
         try:
-            print("Adding to session")
             db.session.add(user)
-            print("Committing")
             db.session.commit()
-            print("Committed successfully")
 
             # For now, skip email sending to test basic functionality
             flash('Account created successfully! You can now log in.', 'success')
             return redirect(url_for('login'))
 
         except Exception as e:
-            print(f"Database error during signup: {e}")
-            print(f"Error type: {type(e)}")
-            import traceback
-            traceback.print_exc()
             db.session.rollback()
             flash('An error occurred during account creation. Please try again.', 'error')
             return redirect(url_for('signup'))

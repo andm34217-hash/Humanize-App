@@ -10,7 +10,6 @@ app = Flask(__name__, template_folder='templates', static_folder='static')
 
 # Configuration
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
-print(f"DATABASE_URL: {app.config['SQLALCHEMY_DATABASE_URI']}")
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///humanize.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -29,5 +28,9 @@ app.root_path = os.path.dirname(__file__)
 # Import models and routes after app configuration
 from models import db
 db.init_app(app)
+
+# Create database tables if they don't exist
+with app.app_context():
+    db.create_all()
 
 from routes import *
