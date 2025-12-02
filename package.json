@@ -1,0 +1,12 @@
+{
+  "name": "humanize-auth",
+  "version": "1.0.0",
+  "description": "Authentication system for Humanize",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
