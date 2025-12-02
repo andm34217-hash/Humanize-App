@@ -214,23 +214,28 @@ function showTab(tabName) {
 function toggleTheme() {
     document.body.classList.toggle('dark');
     const button = document.getElementById('theme-toggle');
-    if (document.body.classList.contains('dark')) {
-        button.innerHTML = '<i class="fas fa-sun"></i>';
-        localStorage.setItem('theme', 'dark');
-    } else {
-        button.innerHTML = '<i class="fas fa-moon"></i>';
-        localStorage.setItem('theme', 'light');
+    if (button) {
+        if (document.body.classList.contains('dark')) {
+            button.innerHTML = '<i class="fas fa-sun"></i>';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            button.innerHTML = '<i class="fas fa-moon"></i>';
+            localStorage.setItem('theme', 'light');
+        }
     }
 }
 
 // Initialize theme on load
 document.addEventListener('DOMContentLoaded', function() {
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark');
-        document.getElementById('theme-toggle').innerHTML = '<i class="fas fa-sun"></i>';
-    } else {
-        document.getElementById('theme-toggle').innerHTML = '<i class="fas fa-moon"></i>';
+    const button = document.getElementById('theme-toggle');
+    if (button) {
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark');
+            button.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            button.innerHTML = '<i class="fas fa-moon"></i>';
+        }
     }
 });
 
@@ -254,8 +259,10 @@ function updateUnits() {
     }
 }
 
-document.getElementById('unit-category').addEventListener('change', updateUnits);
-updateUnits(); // initial
+if (document.getElementById('unit-category')) {
+    document.getElementById('unit-category').addEventListener('change', updateUnits);
+    updateUnits(); // initial
+}
 
 function convertUnit() {
     const category = document.getElementById('unit-category').value;
@@ -426,40 +433,44 @@ function calculateConcentration() {
 
 // Periodic table
 const elements = {
-    H: { name: 'Hidrogen', mass: 1.008 },
-    He: { name: 'Heliu', mass: 4.003 },
-    Li: { name: 'Litiu', mass: 6.941 },
-    Be: { name: 'Beriliu', mass: 9.012 },
-    B: { name: 'Bor', mass: 10.811 },
+    H: { name: 'Hydrogen', mass: 1.008 },
+    He: { name: 'Helium', mass: 4.003 },
+    Li: { name: 'Lithium', mass: 6.941 },
+    Be: { name: 'Beryllium', mass: 9.012 },
+    B: { name: 'Boron', mass: 10.811 },
     C: { name: 'Carbon', mass: 12.011 },
-    N: { name: 'Azot', mass: 14.007 },
-    O: { name: 'Oxigen', mass: 15.999 },
-    F: { name: 'Fluor', mass: 18.998 },
+    N: { name: 'Nitrogen', mass: 14.007 },
+    O: { name: 'Oxygen', mass: 15.999 },
+    F: { name: 'Fluorine', mass: 18.998 },
     Ne: { name: 'Neon', mass: 20.180 },
-    Na: { name: 'Sodiu', mass: 22.990 },
-    Mg: { name: 'Magneziu', mass: 24.305 },
-    Al: { name: 'Aluminiu', mass: 26.982 },
-    Si: { name: 'Siliciu', mass: 28.086 },
-    P: { name: 'Fosfor', mass: 30.974 },
-    S: { name: 'Sulf', mass: 32.065 },
-    Cl: { name: 'Clor', mass: 35.453 },
+    Na: { name: 'Sodium', mass: 22.990 },
+    Mg: { name: 'Magnesium', mass: 24.305 },
+    Al: { name: 'Aluminum', mass: 26.982 },
+    Si: { name: 'Silicon', mass: 28.086 },
+    P: { name: 'Phosphorus', mass: 30.974 },
+    S: { name: 'Sulfur', mass: 32.065 },
+    Cl: { name: 'Chlorine', mass: 35.453 },
     Ar: { name: 'Argon', mass: 39.948 }
 };
 
-document.querySelectorAll('.periodic-table td').forEach(td => {
-    td.addEventListener('click', function() {
-        const elem = this.getAttribute('data-element');
-        const info = elements[elem];
-        document.getElementById('element-info').innerText = `${info.name}: Masă atomică ${info.mass}`;
+if (document.querySelectorAll('.periodic-table td').length > 0) {
+    document.querySelectorAll('.periodic-table td').forEach(td => {
+        td.addEventListener('click', function() {
+            const elem = this.getAttribute('data-element');
+            const info = elements[elem];
+            document.getElementById('element-info').innerText = `${info.name}: Atomic mass ${info.mass}`;
+        });
     });
-});
+}
 
 // Chemistry type change
-document.getElementById('chemistry-type').addEventListener('change', function() {
-    const type = this.value;
-    document.getElementById('molar-mass-calc').style.display = type === 'molar_mass' ? 'block' : 'none';
-    document.getElementById('concentration-calc').style.display = type === 'concentration' ? 'block' : 'none';
-});
+if (document.getElementById('chemistry-type')) {
+    document.getElementById('chemistry-type').addEventListener('change', function() {
+        const type = this.value;
+        document.getElementById('molar-mass-calc').style.display = type === 'molar_mass' ? 'block' : 'none';
+        document.getElementById('concentration-calc').style.display = type === 'concentration' ? 'block' : 'none';
+    });
+}
 
 // New app functions
 function switchTool(toolName) {
