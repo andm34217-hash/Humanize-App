@@ -79,9 +79,11 @@ def privacy():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
+        print("Signup POST request received")
         name = request.form.get('name')
         email = request.form.get('email')
         password = request.form.get('password')
+        print(f"Form data: name={name}, email={email}, password={'*' * len(password) if password else None}")
 
         # Validate input
         if not all([name, email, password]):
@@ -99,24 +101,24 @@ def signup():
             return redirect(url_for('signup'))
 
         # Create new user
-        user = User(name=name, email=email)
+        user = User(name=name, email=email, confirmed=True)  # Temporarily set confirmed=True for testing
         user.set_password(password)
 
         try:
             db.session.add(user)
             db.session.commit()
 
-            # Send confirmation email
-            if send_confirmation_email(user):
-                flash('Account created! Check your email to confirm your account.', 'success')
-                return redirect(url_for('login'))
-            else:
-                flash('Account created but failed to send confirmation email. Please contact support.', 'warning')
-                return redirect(url_for('login'))
+            # For now, skip email sending to test basic functionality
+            flash('Account created successfully! You can now log in.', 'success')
+            return redirect(url_for('login'))
 
         except Exception as e:
+            print(f"Database error during signup: {e}")
+            print(f"Error type: {type(e)}")
+            import traceback
+            traceback.print_exc()
             db.session.rollback()
-            flash('An error occurred. Please try again.', 'error')
+            flash('An error occurred during account creation. Please try again.', 'error')
             return redirect(url_for('signup'))
 
     return render_template('signup.html')
