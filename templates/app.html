@@ -9,7 +9,7 @@
         <div class="trial-notice">
             <div class="trial-status">
                 <h3>Free Trial</h3>
-                <p>You have <strong>{{ 3 - trial_uses }}</strong> uses remaining out of {{ trial_limit }}</p>
+                <p>You have <strong>{{ trial_limit - trial_uses }}</strong> uses remaining out of {{ trial_limit }}</p>
                 <div class="trial-progress">
                     <div class="trial-progress-bar" style="width: {{ trial_progress }}%"></div>
                 </div>

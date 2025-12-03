@@ -18,8 +18,8 @@ def app_page():
         return render_template('app.html')
     # For non-authenticated users, check trial usage
     trial_uses = session.get('trial_uses', 0)
-    trial_progress = (trial_uses / 3) * 100
-    return render_template('app.html', trial_uses=trial_uses, trial_limit=3, trial_progress=trial_progress)
+    trial_progress = (trial_uses / 8) * 100
+    return render_template('app.html', trial_uses=trial_uses, trial_limit=8, trial_progress=trial_progress)
 
 @app.route('/instrumente')
 def instrumente_page():
@@ -29,7 +29,7 @@ def instrumente_page():
 def detect():
     if not session.get('user_id'):
         trial_uses = session.get('trial_uses', 0)
-        if trial_uses >= 3:
+        if trial_uses >= 8:
             return jsonify({'error': 'Trial limit reached. Please create an account to continue.', 'trial_limit_reached': True})
         session['trial_uses'] = trial_uses + 1
 
@@ -41,7 +41,7 @@ def detect():
 def summary():
     if not session.get('user_id'):
         trial_uses = session.get('trial_uses', 0)
-        if trial_uses >= 3:
+        if trial_uses >= 8:
             return jsonify({'error': 'Trial limit reached. Please create an account to continue.', 'trial_limit_reached': True})
         session['trial_uses'] = trial_uses + 1
 
@@ -53,7 +53,7 @@ def summary():
 def rewrite():
     if not session.get('user_id'):
         trial_uses = session.get('trial_uses', 0)
-        if trial_uses >= 3:
+        if trial_uses >= 8:
             return jsonify({'error': 'Trial limit reached. Please create an account to continue.', 'trial_limit_reached': True})
         session['trial_uses'] = trial_uses + 1
 
