@@ -86,7 +86,7 @@ def login_api():
                 'plan': user['plan'],
                 'functions': user['functions']
             }
-            return redirect('/dashboard')
+            return jsonify({'success': True})
     return jsonify({'error': 'Invalid credentials'}), 401
 
 @app.route('/logout')

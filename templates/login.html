@@ -45,14 +45,11 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
             },
             body: JSON.stringify({ email, password })
         });
-        if (response.redirected) {
+        const data = await response.json();
+        if (response.ok && data.success) {
             window.location.href = '/dashboard';
-        } else if (!response.ok) {
-            const errorData = await response.json();
-            document.getElementById('login-result').innerHTML = `<div class="alert alert-danger">${errorData.error}</div>`;
         } else {
-            // unexpected success without redirect
-            window.location.href = '/dashboard';
+            document.getElementById('login-result').innerHTML = `<div class="alert alert-danger">${data.error || 'Eroare necunoscută'}</div>`;
         }
     } catch (err) {
         document.getElementById('login-result').innerHTML = '<div class="alert alert-danger">Eroare de rețea</div>';
