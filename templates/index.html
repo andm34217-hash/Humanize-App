@@ -1,44 +1,108 @@
 {% extends "base.html" %}
 
-{% block title %}Humanize - Make AI Text Sound Human{% endblock %}
+{% block title %}Humanize - AI Writing & Academic Tools{% endblock %}
 
 {% block content %}
 <section class="hero">
-    <div class="hero-container">
-        <h1>Make AI text sound human</h1>
-        <p>Try Humanize for free. No account required.</p>
-        <a href="#trial" class="btn-primary">Try now</a>
+    <div class="container">
+        <h1>Transform AI-Generated Text into Human Writing</h1>
+        <p>Make your content undetectable by AI detectors. Perfect for students, writers, and professionals who need authentic, human-like text.</p>
+        <div class="buttons">
+            <a href="#demo" class="btn-primary">
+                <i class="fas fa-magic"></i>
+                Try Humanize Free
+            </a>
+            <a href="#demo" class="btn-secondary">
+                <i class="fas fa-play"></i>
+                See Demo
+            </a>
+        </div>
     </div>
 </section>
 
-<section id="trial" class="trial-section">
-    <div class="trial-container">
-        <div class="trial-input-group">
-            <h2>Transform your AI text</h2>
-            <textarea id="trial-text" placeholder="Paste your AI-generated text here..."></textarea>
-            <button id="transform-btn" class="btn-primary" onclick="transformText()">
-                Transform
-            </button>
+<section class="features">
+    <div class="container">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-brain"></i>
+            </div>
+            <h3>AI Text Humanizer</h3>
+            <p>Convert robotic AI text into natural, human-sounding content that passes all AI detection tools. Maintain your voice while ensuring authenticity.</p>
         </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <h3>AI Content Detector</h3>
+            <p>Analyze any text to determine AI-generated content percentage with our advanced detection algorithm. Know what you're reading.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-edit"></i>
+            </div>
+            <h3>Smart Rewriter</h3>
+            <p>Rewrite, paraphrase, and summarize text while preserving meaning. Perfect for academic writing, content creation, and SEO optimization.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-calculator"></i>
+            </div>
+            <h3>Academic Calculators</h3>
+            <p>Comprehensive scientific calculators for chemistry, physics, and mathematics. Essential tools for students and researchers.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <h3>Usage Analytics</h3>
+            <p>Track your writing improvements with detailed analytics. Monitor AI detection rates, word counts, and processing history.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-cloud"></i>
+            </div>
+            <h3>Cloud Sync</h3>
+            <p>Save, share, and export your processed texts. Access your work from any device with secure cloud storage.</p>
+        </div>
+    </div>
+</section>
 
-        <div class="trial-output-group">
-            <h3>Result</h3>
-            <div id="trial-output" class="trial-output">
-                <p>Your transformed text will appear here...</p>
+<section class="cta-section">
+    <div class="container">
+        <h2>Ready to Humanize Your Writing?</h2>
+        <p>Join thousands of students and professionals who trust Humanize to create authentic content.</p>
+        <a href="/signup" class="btn-primary">
+            <i class="fas fa-rocket"></i>
+            Start Free Trial
+        </a>
+    </div>
+</section>
+
+<section id="demo" class="demo-section">
+    <div class="container">
+        <div class="demo-container">
+            <h2>Try Humanize Now</h2>
+            <p class="trial-info">Limited to 3 transformations per visitor. Create an account for unlimited usage.</p>
+            <div class="demo-input">
+                <textarea id="demo-text" placeholder="Paste your AI-generated text here...">This is an example of AI-generated text that sounds robotic and artificial. It lacks the natural flow and personality of human writing. Humanize will transform this into content that reads naturally and passes AI detection.</textarea>
+                <div class="char-counter">
+                    <span id="char-count">0</span>/500 characters
+                </div>
+            </div>
+            <div class="demo-actions">
+                <button id="humanize-btn" class="btn-primary demo-button" onclick="humanizeDemo()">
+                    <i class="fas fa-magic"></i>
+                    Humanize Text (Free Trial)
+                </button>
+                <button id="create-account-btn" class="btn-secondary demo-button" onclick="redirectToSignup()">
+                    <i class="fas fa-user-plus"></i>
+                    Create Account to Continue
+                </button>
+            </div>
+            <div class="demo-output" id="demo-output">
+                <p>Your humanized text will appear here...</p>
             </div>
         </div>
-
-        <div id="trial-limit-message" class="trial-limit-message" style="display: none;">
-            <h3>Free trial ended</h3>
-            <p>Please create an account to continue using Humanize.</p>
-            <a href="/signup" class="btn-primary">Create account</a>
-        </div>
     </div>
 </section>
-
-<footer class="footer">
-    <div class="footer-container">
-        <p>&copy; Humanize</p>
-    </div>
-</footer>
 {% endblock %}
