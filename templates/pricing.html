@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Prețuri - Humanize{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="text-center mb-5">Planuri de Prețuri</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-header">
+                    <h4>Gratuit</h4>
+                </div>
+                <div class="card-body">
+                    <h2>0€</h2>
+                    <p>Lunar</p>
+                    <ul class="list-unstyled">
+                        <li>10 utilizări pe zi</li>
+                        <li>Acces la toate instrumentele</li>
+                    </ul>
+                    <a href="/signup" class="btn btn-primary">Începe</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h4>Premium</h4>
+                </div>
+                <div class="card-body">
+                    <h2>9.99€</h2>
+                    <p>Lunar</p>
+                    <ul class="list-unstyled">
+                        <li>Utilizări nelimitate</li>
+                        <li>Acces prioritar</li>
+                        <li>Suport 24/7</li>
+                    </ul>
+                    <a href="/signup" class="btn btn-primary">Începe</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-header">
+                    <h4>Enterprise</h4>
+                </div>
+                <div class="card-body">
+                    <h2>Contactează-ne</h2>
+                    <p>Pentru prețuri personalizate</p>
+                    <ul class="list-unstyled">
+                        <li>Toate funcțiile Premium</li>
+                        <li>Integrare API</li>
+                        <li>Suport dedicat</li>
+                    </ul>
+                    <a href="mailto:contact@humanize.ro" class="btn btn-outline-primary">Contact</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

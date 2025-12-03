@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Înscrie-te - Humanize{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4>Înscrie-te</h4>
+                </div>
+                <div class="card-body">
+                    <form id="signup-form">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nume</label>
+                            <input type="text" class="form-control" id="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Parolă</label>
+                            <input type="password" class="form-control" id="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Înscrie-te</button>
+                    </form>
+                    <div id="signup-result" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('signup-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    // For now, just show a message
+    document.getElementById('signup-result').innerHTML = '<div class="alert alert-success">Înregistrare reușită! Verifică email-ul pentru confirmare.</div>';
+});
+</script>
+{% endblock %}

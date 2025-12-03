@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}Instrumente - Humanize{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="text-center mb-5">Instrumente AI</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Detector AI</h5>
+                </div>
+                <div class="card-body">
+                    <textarea id="ai-text" class="form-control mb-3" rows="4" placeholder="Introdu textul pentru analiză..."></textarea>
+                    <button id="detect-btn" class="btn btn-primary">Detectează</button>
+                    <div id="ai-result" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Rezumat</h5>
+                </div>
+                <div class="card-body">
+                    <textarea id="summary-text" class="form-control mb-3" rows="4" placeholder="Introdu textul pentru rezumat..."></textarea>
+                    <button id="summary-btn" class="btn btn-primary">Rezumat</button>
+                    <div id="summary-result" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Rescriere</h5>
+                </div>
+                <div class="card-body">
+                    <textarea id="rewrite-text" class="form-control mb-3" rows="4" placeholder="Introdu textul pentru rescriere..."></textarea>
+                    <button id="rewrite-btn" class="btn btn-primary">Rescrie</button>
+                    <div id="rewrite-result" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Calculatoare</h5>
+                </div>
+                <div class="card-body">
+                    <select id="calc-type" class="form-select mb-3">
+                        <option value="molar_mass">Masă Molară</option>
+                        <option value="kinematics">Kinematice</option>
+                        <option value="math_expansion">Expansiune Matematică</option>
+                    </select>
+                    <div id="calc-inputs"></div>
+                    <button id="calc-btn" class="btn btn-primary">Calculează</button>
+                    <div id="calc-result" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('detect-btn').addEventListener('click', async () => {
+    const text = document.getElementById('ai-text').value;
+    const response = await fetch('/api/detect_ai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+    });
+    const data = await response.json();
+    document.getElementById('ai-result').innerText = data.result;
+});
+
+document.getElementById('summary-btn').addEventListener('click', async () => {
+    const text = document.getElementById('summary-text').value;
+    const response = await fetch('/api/summarize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+    });
+    const data = await response.json();
+    document.getElementById('summary-result').innerText = data.result;
+});
+
+document.getElementById('rewrite-btn').addEventListener('click', async () => {
+    const text = document.getElementById('rewrite-text').value;
+    const response = await fetch('/api/rewrite', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+    });
+    const data = await response.json();
+    document.getElementById('rewrite-result').innerText = data.result;
+});
+
+document.getElementById('calc-type').addEventListener('change', () => {
+    const type = document.getElementById('calc-type').value;
+    const inputsDiv = document.getElementById('calc-inputs');
+    if (type === 'molar_mass') {
+        inputsDiv.innerHTML = '<input type="text" id="formula" class="form-control" placeholder="Formula chimică (ex: H2O)">';
+    } else if (type === 'kinematics') {
+        inputsDiv.innerHTML = `
+            <input type="number" id="u" class="form-control mb-2" placeholder="Viteză inițială (m/s)">
+            <input type="number" id="a" class="form-control mb-2" placeholder="Accelerație (m/s²)">
+            <input type="number" id="t" class="form-control" placeholder="Timp (s)">
+        `;
+    } else if (type === 'math_expansion') {
+        inputsDiv.innerHTML = '<input type="text" id="expression" class="form-control" placeholder="Expresie matematică (ex: (x+1)^2)">';
+    }
+});
+
+document.getElementById('calc-btn').addEventListener('click', async () => {
+    const type = document.getElementById('calc-type').value;
+    let params = {};
+    if (type === 'molar_mass') {
+        params.formula = document.getElementById('formula').value;
+    } else if (type === 'kinematics') {
+        params.initial_velocity = parseFloat(document.getElementById('u').value) || 0;
+        params.acceleration = parseFloat(document.getElementById('a').value) || 0;
+        params.time = parseFloat(document.getElementById('t').value) || 0;
+    } else if (type === 'math_expansion') {
+        params.expression = document.getElementById('expression').value;
+    }
+    const response = await fetch('/api/calculate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type, params })
+    });
+    const data = await response.json();
+    document.getElementById('calc-result').innerText = data.result;
+});
+</script>
+{% endblock %}
