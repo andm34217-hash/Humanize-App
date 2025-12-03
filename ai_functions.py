@@ -31,7 +31,7 @@ def summarize_text(text):
         return "No text to summarize"
     try:
         response = client.chat.completions.create(
-            model="llama3-8b-8192",
+            model="llama3-70b-8192",
             messages=[
                 {"role": "system", "content": "Summarize the following text in a concise manner."},
                 {"role": "user", "content": text}
@@ -50,7 +50,7 @@ def rewrite_text(text):
         return "No text to rewrite"
     try:
         response = client.chat.completions.create(
-            model="llama3-8b-8192",
+            model="llama3-70b-8192",
             messages=[
                 {"role": "system", "content": "Rewrite the following text in a different way, keeping the meaning intact."},
                 {"role": "user", "content": text}
