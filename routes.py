@@ -8,11 +8,18 @@ from werkzeug.security import check_password_hash
 
 @app.route('/')
 def home():
+    if session.get('user_id'):
+        return redirect(url_for('dashboard'))
     return render_template('index.html')
 
 @app.route('/app')
 def app_page():
-    return render_template('app.html')
+    if session.get('user_id'):
+        return render_template('app.html')
+    # For non-authenticated users, check trial usage
+    trial_uses = session.get('trial_uses', 0)
+    trial_progress = (trial_uses / 3) * 100
+    return render_template('app.html', trial_uses=trial_uses, trial_limit=3, trial_progress=trial_progress)
 
 @app.route('/instrumente')
 def instrumente_page():
@@ -20,18 +27,36 @@ def instrumente_page():
 
 @app.route('/detect', methods=['POST'])
 def detect():
+    if not session.get('user_id'):
+        trial_uses = session.get('trial_uses', 0)
+        if trial_uses >= 3:
+            return jsonify({'error': 'Trial limit reached. Please create an account to continue.', 'trial_limit_reached': True})
+        session['trial_uses'] = trial_uses + 1
+
     text = request.form['text']
     result = detect_ai(text)
     return jsonify(result)
 
 @app.route('/summary', methods=['POST'])
 def summary():
+    if not session.get('user_id'):
+        trial_uses = session.get('trial_uses', 0)
+        if trial_uses >= 3:
+            return jsonify({'error': 'Trial limit reached. Please create an account to continue.', 'trial_limit_reached': True})
+        session['trial_uses'] = trial_uses + 1
+
     text = request.form['text']
     result = summarize_text(text)
     return jsonify(result)
 
 @app.route('/rewrite', methods=['POST'])
 def rewrite():
+    if not session.get('user_id'):
+        trial_uses = session.get('trial_uses', 0)
+        if trial_uses >= 3:
+            return jsonify({'error': 'Trial limit reached. Please create an account to continue.', 'trial_limit_reached': True})
+        session['trial_uses'] = trial_uses + 1
+
     text = request.form['text']
     result = rewrite_text(text)
     return jsonify(result)

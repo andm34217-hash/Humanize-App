@@ -5,6 +5,19 @@
 {% block content %}
 <section class="app-section">
     <div class="container">
+        {% if not session.get('user_id') %}
+        <div class="trial-notice">
+            <div class="trial-status">
+                <h3>Free Trial</h3>
+                <p>You have <strong>{{ 3 - trial_uses }}</strong> uses remaining out of {{ trial_limit }}</p>
+                <div class="trial-progress">
+                    <div class="trial-progress-bar" style="width: {{ trial_progress }}%"></div>
+                </div>
+                <p class="trial-warning">Create an account for unlimited access</p>
+            </div>
+        </div>
+        {% endif %}
+
         <div class="app-header">
             <h1>AI Writing Tools</h1>
             <p>Transform your content with our suite of AI-powered writing tools</p>

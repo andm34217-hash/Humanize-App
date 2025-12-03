@@ -87,38 +87,49 @@ function showNotification(message, type = 'info') {
 }
 
 function detectAI() {
-    const text = document.getElementById('ai-text').value;
-    if (text === lastRewritten.trim()) {
-        detectionCache.set(text, 10);
-        document.getElementById('progress-fill').style.width = '10%';
-        document.getElementById('percentage-text').innerText = '10%';
+    const text = document.getElementById('detector-text').value;
+    if (!text.trim()) {
+        showNotification('Please enter some text to analyze', 'error');
         return;
     }
-    if (detectionCache.has(text)) {
-        const percentage = detectionCache.get(text);
-        document.getElementById('progress-fill').style.width = percentage + '%';
-        document.getElementById('percentage-text').innerText = percentage + '%';
-        return;
-    }
-    fetch('/detect', {
+
+    // Show loading
+    const button = document.getElementById('detector-text').nextElementSibling.querySelector('.btn-primary');
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+    button.disabled = true;
+
+    fetch('/rewrite', {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: 'text=' + encodeURIComponent(text)
     })
     .then(response => response.json())
     .then(data => {
+        if (data.trial_limit_reached) {
+            showNotification('You\'ve reached the free trial limit. Please create an account to continue.', 'error');
+            setTimeout(() => {
+                window.location.href = '/signup';
+            }, 2000);
+            return;
+        }
+
         if (data.percentage !== undefined) {
-            const percentage = data.percentage;
-            detectionCache.set(text, percentage);
-            document.getElementById('progress-fill').style.width = percentage + '%';
-            document.getElementById('percentage-text').innerText = percentage + '%';
-            document.getElementById('ai-error').innerText = '';
+            document.getElementById('progress-fill').style.width = data.percentage + '%';
+            document.getElementById('percentage-text').innerText = data.percentage + '%';
+            document.getElementById('confidence-text').innerText = 'Analysis completed successfully!';
+            showNotification('AI detection completed!', 'success');
         } else {
-            document.getElementById('ai-error').innerText = 'Eroare: ' + (data.error || 'Necunoscut');
+            document.getElementById('confidence-text').innerText = 'Error: ' + (data.error || 'Unknown error');
+            showNotification('Analysis failed', 'error');
         }
     })
     .catch(error => {
-        document.getElementById('ai-error').innerText = 'Eroare de rețea: ' + error.message;
+        document.getElementById('confidence-text').innerText = 'Network error: ' + error.message;
+        showNotification('Network error occurred', 'error');
+    })
+    .finally(() => {
+        button.innerHTML = '<i class="fas fa-search"></i> Analyze Text';
+        button.disabled = false;
     });
 }
 
@@ -581,15 +592,43 @@ function humanizeText() {
     output.innerHTML = '<p>Processing...</p>';
     output.classList.add('loading');
 
-    // Mock humanization - replace with actual API call
-    setTimeout(() => {
-        const humanized = text.replace(/AI-generated/g, 'human-crafted')
-                              .replace(/robotic/g, 'natural')
-                              .replace(/artificial/g, 'authentic');
-        output.innerHTML = `<p>${humanized}</p>`;
+    // Show loading on button
+    const button = document.querySelector('#humanizer-text').nextElementSibling.querySelector('.btn-primary');
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Humanizing...';
+    button.disabled = true;
+
+    fetch('/detect', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: 'text=' + encodeURIComponent(text)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.trial_limit_reached) {
+            showNotification('You\'ve reached the free trial limit. Please create an account to continue.', 'error');
+            setTimeout(() => {
+                window.location.href = '/signup';
+            }, 2000);
+            return;
+        }
+
+        if (data.result) {
+            output.innerHTML = `<p>${data.result}</p>`;
+            showNotification('Text humanized successfully!', 'success');
+        } else {
+            output.innerHTML = '<p>Error processing text</p>';
+            showNotification('Processing failed', 'error');
+        }
+    })
+    .catch(error => {
+        output.innerHTML = '<p>Network error occurred</p>';
+        showNotification('Network error occurred', 'error');
+    })
+    .finally(() => {
         output.classList.remove('loading');
-        showNotification('Text humanized successfully!', 'success');
-    }, 1500);
+        button.innerHTML = '<i class="fas fa-magic"></i> Humanize Text';
+        button.disabled = false;
+    });
 }
 
 function rewriteText() {
@@ -605,19 +644,45 @@ function rewriteText() {
     output.innerHTML = '<p>Processing...</p>';
     output.classList.add('loading');
 
-    // Mock processing based on mode
-    setTimeout(() => {
-        let result = text;
-        if (mode === 'summarize') {
-            result = 'Summary: ' + text.substring(0, 100) + '...';
-        } else if (mode === 'paraphrase') {
-            result = text.replace(/is/g, 'appears to be').replace(/are/g, 'seem to be');
-        } else {
-            result = text.replace(/The/g, 'This').replace(/A/g, 'One');
+    // Show loading on button
+    const button = document.querySelector('#rewriter-text').nextElementSibling.nextElementSibling.querySelector('.btn-primary');
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    button.disabled = true;
+
+    const endpoint = mode === 'summarize' ? '/summary' : '/rewrite';
+    const body = mode === 'summarize' ? 'text=' + encodeURIComponent(text) : 'text=' + encodeURIComponent(text);
+
+    fetch(endpoint, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: body
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.trial_limit_reached) {
+            showNotification('You\'ve reached the free trial limit. Please create an account to continue.', 'error');
+            setTimeout(() => {
+                window.location.href = '/signup';
+            }, 2000);
+            return;
         }
 
-        output.innerHTML = `<p>${result}</p>`;
+        if (data.summary || data.rewritten) {
+            const result = data.summary || data.rewritten;
+            output.innerHTML = `<p>${result}</p>`;
+            showNotification('Text processed successfully!', 'success');
+        } else {
+            output.innerHTML = '<p>Error processing text</p>';
+            showNotification('Processing failed', 'error');
+        }
+    })
+    .catch(error => {
+        output.innerHTML = '<p>Network error occurred</p>';
+        showNotification('Network error occurred', 'error');
+    })
+    .finally(() => {
         output.classList.remove('loading');
-        showNotification('Text processed successfully!', 'success');
-    }, 1500);
+        button.innerHTML = '<i class="fas fa-edit"></i> Process Text';
+        button.disabled = false;
+    });
 }
