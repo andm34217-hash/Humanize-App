@@ -1,203 +1,94 @@
 let detectionCache = new Map();
 let lastRewritten = '';
 
-function humanizeText() {
-    const text = document.getElementById('humanizer-text').value;
-    const output = document.getElementById('humanizer-output');
+function transformText() {
+    const text = document.getElementById('trial-text').value;
+    const output = document.getElementById('trial-output');
+    const button = document.getElementById('transform-btn');
 
     if (!text.trim()) {
-        showNotification('Please enter some text to humanize', 'error');
+        showNotification('Please enter some text to transform', 'error');
         return;
     }
 
     // Check trial limit
     let trialUses = parseInt(localStorage.getItem('trialUses') || '0');
-    if (trialUses >= 8) {
-        showSignupModal();
-        return;
-    }
-
-    output.innerHTML = '<p>Processing...</p>';
-    output.classList.add('loading');
-
-    // Show loading on button
-    const button = document.querySelector('#humanizer-text').nextElementSibling.querySelector('.btn-primary');
-    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Humanizing...';
-    button.disabled = true;
-
-    // Simulate API call
-    setTimeout(() => {
-        const humanized = text.replace(/AI-generated/g, 'human-crafted')
-                              .replace(/robotic/g, 'natural')
-                              .replace(/artificial/g, 'authentic');
-        output.innerHTML = `<p>${humanized}</p>`;
-        output.classList.remove('loading');
-        button.innerHTML = '<i class="fas fa-magic"></i> Humanize Text';
-        button.disabled = false;
-
-        // Increment trial uses
-        trialUses++;
-        localStorage.setItem('trialUses', trialUses.toString());
-
-        showNotification('Text humanized successfully!', 'success');
-
-        // Check if limit reached after this use
-        if (trialUses >= 8) {
-            setTimeout(() => {
-                showSignupModal();
-            }, 1000);
-        }
-    }, 1500);
-}
-
-function detectAI() {
-    const text = document.getElementById('detector-text').value;
-
-    if (!text.trim()) {
-        showNotification('Please enter some text to analyze', 'error');
-        return;
-    }
-
-    // Check trial limit
-    let trialUses = parseInt(localStorage.getItem('trialUses') || '0');
-    if (trialUses >= 8) {
-        showSignupModal();
+    if (trialUses >= 3) {
+        showTrialLimit();
         return;
     }
 
     // Show loading
-    const button = document.querySelector('#detector-text').nextElementSibling.querySelector('.btn-primary');
-    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+    button.innerHTML = 'Transforming...';
     button.disabled = true;
+    output.innerHTML = '<p>Processing your text...</p>';
 
     // Simulate API call
     setTimeout(() => {
-        const percentage = Math.floor(Math.random() * 100);
-        document.getElementById('progress-fill').style.width = percentage + '%';
-        document.getElementById('percentage-text').innerText = percentage + '%';
-        document.getElementById('confidence-text').innerText = percentage > 50 ? 'High AI content detected' : 'Mostly human-written content';
+        const transformed = text.replace(/AI-generated/g, 'human-crafted')
+                               .replace(/robotic/g, 'natural')
+                               .replace(/artificial/g, 'authentic')
+                               .replace(/lacks/g, 'maintains')
+                               .replace(/transform/g, 'enhance');
 
-        button.innerHTML = '<i class="fas fa-search"></i> Analyze Text';
+        output.innerHTML = `<p>${transformed}</p>`;
+        button.innerHTML = 'Transform';
         button.disabled = false;
 
         // Increment trial uses
         trialUses++;
         localStorage.setItem('trialUses', trialUses.toString());
 
-        showNotification('AI detection completed!', 'success');
+        showNotification('Text transformed successfully!', 'success');
 
         // Check if limit reached after this use
-        if (trialUses >= 8) {
+        if (trialUses >= 3) {
             setTimeout(() => {
-                showSignupModal();
+                showTrialLimit();
             }, 1000);
         }
-    }, 1500);
+    }, 2000);
 }
 
-function rewriteText() {
-    const text = document.getElementById('rewriter-text').value;
-    const mode = document.getElementById('rewrite-mode').value;
-    const output = document.getElementById('rewriter-output');
+function showTrialLimit() {
+    document.getElementById('trial-limit-message').style.display = 'block';
+    document.getElementById('trial-text').disabled = true;
+    document.getElementById('transform-btn').disabled = true;
+    document.getElementById('transform-btn').textContent = 'Trial Ended';
+}
 
-    if (!text.trim()) {
-        showNotification('Please enter some text to process', 'error');
-        return;
-    }
+function showNotification(message, type = 'info') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+        ${message}
+    `;
 
-    // Check trial limit
-    let trialUses = parseInt(localStorage.getItem('trialUses') || '0');
-    if (trialUses >= 8) {
-        showSignupModal();
-        return;
-    }
+    // Add to page
+    document.body.appendChild(notification);
 
-    output.innerHTML = '<p>Processing...</p>';
-    output.classList.add('loading');
+    // Show with animation
+    setTimeout(() => notification.classList.add('show'), 100);
 
-    // Show loading on button
-    const button = document.querySelector('#rewriter-text').nextElementSibling.nextElementSibling.querySelector('.btn-primary');
-    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-    button.disabled = true;
-
-    // Simulate API call
+    // Remove after 3 seconds
     setTimeout(() => {
-        let result = text;
-        if (mode === 'summarize') {
-            result = 'Summary: ' + text.substring(0, 100) + '...';
-        } else if (mode === 'paraphrase') {
-            result = text.replace(/is/g, 'appears to be').replace(/are/g, 'seem to be');
-        } else {
-            result = text.replace(/The/g, 'This').replace(/A/g, 'One');
-        }
-
-        output.innerHTML = `<p>${result}</p>`;
-        output.classList.remove('loading');
-        button.innerHTML = '<i class="fas fa-edit"></i> Process Text';
-        button.disabled = false;
-
-        // Increment trial uses
-        trialUses++;
-        localStorage.setItem('trialUses', trialUses.toString());
-
-        showNotification('Text processed successfully!', 'success');
-
-        // Check if limit reached after this use
-        if (trialUses >= 8) {
-            setTimeout(() => {
-                showSignupModal();
-            }, 1000);
-        }
-    }, 1500);
+        notification.classList.remove('show');
+        setTimeout(() => document.body.removeChild(notification), 300);
+    }, 3000);
 }
 
-function showSignupModal() {
-    document.getElementById('signup-modal').style.display = 'block';
-    document.body.style.overflow = 'hidden';
-}
-
-function closeModal() {
-    document.getElementById('signup-modal').style.display = 'none';
-    document.body.style.overflow = 'auto';
-}
-
-// Handle modal form submission
+// Smooth scroll to trial section
 document.addEventListener('DOMContentLoaded', function() {
-    const modalForm = document.getElementById('modal-signup-form');
-    if (modalForm) {
-        modalForm.addEventListener('submit', function(e) {
+    const tryNowBtn = document.querySelector('.hero a[href="#trial"]');
+    if (tryNowBtn) {
+        tryNowBtn.addEventListener('click', function(e) {
             e.preventDefault();
-
-            const formData = new FormData(this);
-            const data = {
-                name: formData.get('name'),
-                email: formData.get('email'),
-                password: formData.get('password')
-            };
-
-            // Show loading
-            const submitBtn = this.querySelector('button[type="submit"]');
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
-            submitBtn.disabled = true;
-
-            // Simulate signup
-            setTimeout(() => {
-                showNotification('Account created successfully! You can now log in.', 'success');
-                closeModal();
-                setTimeout(() => {
-                    window.location.href = '/login';
-                }, 2000);
-            }, 1500);
+            const trialSection = document.getElementById('trial');
+            trialSection.scrollIntoView({ behavior: 'smooth' });
         });
     }
-
-    // Close modal when clicking outside
-    window.addEventListener('click', function(event) {
-        const modal = document.getElementById('signup-modal');
-        if (event.target === modal) {
-            closeModal();
-        }
-    });
 });
 
 function redirectToSignup() {

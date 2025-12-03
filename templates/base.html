@@ -16,14 +16,8 @@
                     <a href="/">Humanize</a>
                 </div>
                 <div class="nav-actions">
-                    {% if session.get('user_id') %}
-                        <span class="user-greeting">Hi, {{ session.get('user_name') }}!</span>
-                        <a href="/dashboard" class="btn-secondary">Dashboard</a>
-                        <a href="/logout" class="btn-secondary">Logout</a>
-                    {% else %}
-                        <a href="/login" class="nav-link">Log in</a>
-                        <a href="/signup" class="btn-primary">Sign up</a>
-                    {% endif %}
+                    <a href="/login" class="nav-link">Login</a>
+                    <a href="/signup" class="btn-primary">Sign up</a>
                 </div>
             </div>
         </nav>
