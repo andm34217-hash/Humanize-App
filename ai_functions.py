@@ -1,14 +1,32 @@
+# Placeholder implementations for AI functions
+# These should be replaced with actual AI API calls (e.g., OpenAI, Hugging Face)
+
 def detect_ai_text(text):
-    # Placeholder: simple heuristic
-    if 'artificial intelligence' in text.lower() or 'ai' in text.lower():
-        return 'AI-generated'
+    """
+    Detect if the given text is AI-generated.
+    Placeholder: Returns 'AI' if 'ai' is in text, else 'Human'.
+    """
+    if not text:
+        return "No text provided"
+    if "ai" in text.lower():
+        return "AI"
     else:
-        return 'Human-written'
+        return "Human"
 
 def summarize_text(text):
-    # Placeholder: return first 100 chars as summary
-    return f"Summary: {text[:100]}..."
+    """
+    Summarize the given text.
+    Placeholder: Returns the first 50 characters followed by '...'.
+    """
+    if not text:
+        return "No text to summarize"
+    return text[:50] + "..." if len(text) > 50 else text
 
 def rewrite_text(text):
-    # Placeholder: reverse the text
-    return f"Rewritten: {text[::-1]}"
+    """
+    Rewrite the given text.
+    Placeholder: Returns the text in uppercase.
+    """
+    if not text:
+        return "No text to rewrite"
+    return text.upper()

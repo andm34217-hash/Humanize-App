@@ -1,12 +1,16 @@
 from flask import Flask, render_template, request, jsonify
-from calculators import calculate
-from ai_functions import detect_ai_text, summarize_text, rewrite_text
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+# Removed: sys.path.insert and relative imports
+from ai_functions import detect_ai_text, summarize_text, rewrite_text
+from calculators import calculate
 
-app = Flask(__name__, template_folder='templates', static_folder='static')
+load_dotenv()  # Changed from load_dotenv('../app/.env')
+
+app = Flask(__name__, template_folder='templates', static_folder='static')  # Changed from '../app/templates' and '../app/static'
+
+# Routes remain the same (identical to app.py)
 
 @app.route('/')
 def home():
@@ -56,5 +60,6 @@ def calculate_api():
     params = data.get('params', {})
     result = calculate(calc_type, params)
     return jsonify({'result': result})
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True)  # Added for standalone execution
