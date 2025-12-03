@@ -7,119 +7,176 @@
     <div class="hero-container">
         <div class="hero-content">
             <h1>Transform AI-Generated Text into Human Writing</h1>
-            <p>Make your content undetectable by AI detectors. Perfect for students, writers, and professionals who need authentic, human-like text that passes all detection tools.</p>
-            <div class="hero-buttons">
-                <a href="#trial" class="btn-primary">
-                    Try for Free
-                </a>
-                <a href="#features" class="btn-secondary">
-                    Learn More
-                </a>
+            <p>Make your content undetectable by AI detectors. Perfect for students, writers, and professionals who need authentic, human-like text.</p>
+            <div class="trial-info">
+                <p><strong>Try it free:</strong> 8 transformations included</p>
             </div>
         </div>
-        <div class="hero-illustration">
-            <div class="illustration-placeholder">
+    </div>
+</section>
+
+<section class="app-section">
+    <div class="container">
+        <div class="app-header">
+            <h1>AI Writing Tools</h1>
+            <p>Transform your content with our suite of AI-powered writing tools</p>
+        </div>
+
+        <div class="tool-tabs">
+            <button class="tab-btn active" onclick="switchTool('humanizer')">
                 <i class="fas fa-magic"></i>
-                <p>AI Text Transformation</p>
+                Humanizer
+            </button>
+            <button class="tab-btn" onclick="switchTool('detector')">
+                <i class="fas fa-search"></i>
+                Detector
+            </button>
+            <button class="tab-btn" onclick="switchTool('rewriter')">
+                <i class="fas fa-edit"></i>
+                Rewriter
+            </button>
+        </div>
+
+        <div id="humanizer-tool" class="tool-content active">
+            <div class="tool-container">
+                <div class="input-section">
+                    <h3>Input Text</h3>
+                    <textarea id="humanizer-text" placeholder="Paste your AI-generated text here..."></textarea>
+                    <div class="input-actions">
+                        <button class="btn-secondary" onclick="clearText('humanizer-text')">
+                            <i class="fas fa-trash"></i>
+                            Clear
+                        </button>
+                        <button class="btn-primary" onclick="humanizeText()">
+                            <i class="fas fa-magic"></i>
+                            Humanize Text
+                        </button>
+                    </div>
+                </div>
+                <div class="output-section">
+                    <h3>Humanized Output</h3>
+                    <div class="output-container" id="humanizer-output">
+                        <p>Your humanized text will appear here...</p>
+                    </div>
+                    <div class="output-actions">
+                        <button class="btn-secondary" onclick="copyToClipboard('humanizer-output')">
+                            <i class="fas fa-copy"></i>
+                            Copy
+                        </button>
+                        <button class="btn-secondary" onclick="downloadText('humanizer-output', 'humanized-text.txt')">
+                            <i class="fas fa-download"></i>
+                            Download
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="detector-tool" class="tool-content">
+            <div class="tool-container">
+                <div class="input-section">
+                    <h3>Text to Analyze</h3>
+                    <textarea id="detector-text" placeholder="Paste text to check for AI content..."></textarea>
+                    <div class="input-actions">
+                        <button class="btn-secondary" onclick="clearText('detector-text')">
+                            <i class="fas fa-trash"></i>
+                            Clear
+                        </button>
+                        <button class="btn-primary" onclick="detectAI()">
+                            <i class="fas fa-search"></i>
+                            Analyze Text
+                        </button>
+                    </div>
+                </div>
+                <div class="output-section">
+                    <h3>AI Detection Results</h3>
+                    <div class="detection-results">
+                        <div class="progress-container">
+                            <label>AI Content Percentage:</label>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span id="percentage-text">0%</span>
+                        </div>
+                        <div class="confidence-meter">
+                            <p id="confidence-text">Analysis results will appear here...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="rewriter-tool" class="tool-content">
+            <div class="tool-container">
+                <div class="input-section">
+                    <h3>Text to Rewrite</h3>
+                    <textarea id="rewriter-text" placeholder="Paste text to rewrite or summarize..."></textarea>
+                    <div class="rewrite-options">
+                        <select id="rewrite-mode">
+                            <option value="rewrite">Rewrite</option>
+                            <option value="summarize">Summarize</option>
+                            <option value="paraphrase">Paraphrase</option>
+                        </select>
+                    </div>
+                    <div class="input-actions">
+                        <button class="btn-secondary" onclick="clearText('rewriter-text')">
+                            <i class="fas fa-trash"></i>
+                            Clear
+                        </button>
+                        <button class="btn-primary" onclick="rewriteText()">
+                            <i class="fas fa-edit"></i>
+                            Process Text
+                        </button>
+                    </div>
+                </div>
+                <div class="output-section">
+                    <h3>Rewritten Output</h3>
+                    <div class="output-container" id="rewriter-output">
+                        <p>Your processed text will appear here...</p>
+                    </div>
+                    <div class="output-actions">
+                        <button class="btn-secondary" onclick="copyToClipboard('rewriter-output')">
+                            <i class="fas fa-copy"></i>
+                            Copy
+                        </button>
+                        <button class="btn-secondary" onclick="downloadText('rewriter-output', 'rewritten-text.txt')">
+                            <i class="fas fa-download"></i>
+                            Download
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<section id="trial" class="trial-section">
-    <div class="section-container">
-        <div class="trial-header">
-            <h2>Try it now – no account required</h2>
-            <p>Paste your AI-generated text below and see the transformation in action. You can try up to 3 times before creating an account.</p>
+<!-- Sign-up Modal -->
+<div id="signup-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Create Account</h2>
+            <span class="modal-close" onclick="closeModal()">&times;</span>
         </div>
-
-        <div class="trial-interface">
-            <div class="trial-input-group">
-                <label for="trial-text">Your AI-generated text</label>
-                <textarea id="trial-text" placeholder="Paste your text here..."></textarea>
-                <div class="trial-actions">
-                    <button id="transform-btn" class="btn-primary" onclick="transformText()">
-                        Transform
-                    </button>
+        <div class="modal-body">
+            <p>You've used all 8 free transformations. Create an account to continue using Humanize!</p>
+            <form id="modal-signup-form" class="auth-form">
+                <div class="form-group">
+                    <label for="modal-name">Full Name</label>
+                    <input type="text" id="modal-name" name="name" required>
                 </div>
-            </div>
-
-            <div class="trial-output-group">
-                <label>Humanized result</label>
-                <div id="trial-output" class="trial-output">
-                    <p>Your transformed text will appear here...</p>
+                <div class="form-group">
+                    <label for="modal-email">Email</label>
+                    <input type="email" id="modal-email" name="email" required>
                 </div>
-            </div>
-        </div>
-
-        <div id="trial-limit-message" class="trial-limit-message" style="display: none;">
-            <h3>You've reached the free trial limit</h3>
-            <p>Create an account to continue transforming unlimited text.</p>
-            <a href="/signup" class="btn-primary">Create Account</a>
+                <div class="form-group">
+                    <label for="modal-password">Password</label>
+                    <input type="password" id="modal-password" name="password" required minlength="6">
+                    <small style="color: var(--text-secondary); font-size: 0.875rem;">Must be at least 6 characters</small>
+                </div>
+                <button type="submit" class="btn-primary">Create Account</button>
+            </form>
+            <p class="auth-link">Already have an account? <a href="/login">Sign in</a></p>
         </div>
     </div>
-</section>
-
-<section id="features" class="features-section">
-    <div class="section-container">
-        <div class="features-header">
-            <h2>Powerful AI Writing Tools</h2>
-            <p>Everything you need to create authentic, human-like content that passes AI detection.</p>
-        </div>
-
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-brain"></i>
-                </div>
-                <h3>AI Text Humanizer</h3>
-                <p>Convert robotic AI text into natural, human-sounding content that passes all AI detection tools.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-search"></i>
-                </div>
-                <h3>AI Content Detector</h3>
-                <p>Analyze any text to determine AI-generated content percentage with our advanced detection algorithm.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-edit"></i>
-                </div>
-                <h3>Smart Rewriter</h3>
-                <p>Rewrite, paraphrase, and summarize text while preserving meaning and improving readability.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="footer-section">
-    <div class="section-container">
-        <div class="footer-content">
-            <div class="footer-brand">
-                <h3>Humanize</h3>
-                <p>Transform AI text into human writing.</p>
-            </div>
-            <div class="footer-links">
-                <div class="footer-group">
-                    <h4>Product</h4>
-                    <a href="#features">Features</a>
-                    <a href="/pricing">Pricing</a>
-                    <a href="#trial">Try Free</a>
-                </div>
-                <div class="footer-group">
-                    <h4>Company</h4>
-                    <a href="/about">About</a>
-                    <a href="/contact">Contact</a>
-                    <a href="/privacy">Privacy</a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 Humanize. All rights reserved.</p>
-        </div>
-    </div>
-</section>
+</div>
 {% endblock %}

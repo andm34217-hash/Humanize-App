@@ -1,62 +1,204 @@
 let detectionCache = new Map();
 let lastRewritten = '';
 
-function transformText() {
-    const text = document.getElementById('trial-text').value;
-    const output = document.getElementById('trial-output');
-    const button = document.getElementById('transform-btn');
+function humanizeText() {
+    const text = document.getElementById('humanizer-text').value;
+    const output = document.getElementById('humanizer-output');
 
     if (!text.trim()) {
-        showNotification('Please enter some text to transform', 'error');
+        showNotification('Please enter some text to humanize', 'error');
         return;
     }
 
     // Check trial limit
     let trialUses = parseInt(localStorage.getItem('trialUses') || '0');
-    if (trialUses >= 3) {
-        showTrialLimit();
+    if (trialUses >= 8) {
+        showSignupModal();
         return;
     }
 
-    // Show loading state
-    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Transforming...';
+    output.innerHTML = '<p>Processing...</p>';
+    output.classList.add('loading');
+
+    // Show loading on button
+    const button = document.querySelector('#humanizer-text').nextElementSibling.querySelector('.btn-primary');
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Humanizing...';
     button.disabled = true;
-    output.innerHTML = '<p>Processing your text...</p>';
 
-    // Simulate API call (replace with actual fetch when backend is ready)
+    // Simulate API call
     setTimeout(() => {
-        // Mock transformed text
-        const transformedText = text.replace(/AI-generated/g, 'human-crafted')
-                                   .replace(/robotic/g, 'natural')
-                                   .replace(/artificial/g, 'authentic')
-                                   .replace(/lacks/g, 'maintains')
-                                   .replace(/transform/g, 'enhance');
-
-        output.innerHTML = `<p>${transformedText}</p>`;
-        button.innerHTML = 'Transform';
+        const humanized = text.replace(/AI-generated/g, 'human-crafted')
+                              .replace(/robotic/g, 'natural')
+                              .replace(/artificial/g, 'authentic');
+        output.innerHTML = `<p>${humanized}</p>`;
+        output.classList.remove('loading');
+        button.innerHTML = '<i class="fas fa-magic"></i> Humanize Text';
         button.disabled = false;
 
         // Increment trial uses
         trialUses++;
         localStorage.setItem('trialUses', trialUses.toString());
 
-        showNotification('Text transformed successfully!', 'success');
+        showNotification('Text humanized successfully!', 'success');
 
         // Check if limit reached after this use
-        if (trialUses >= 3) {
+        if (trialUses >= 8) {
             setTimeout(() => {
-                showTrialLimit();
+                showSignupModal();
             }, 1000);
         }
-    }, 2000);
+    }, 1500);
 }
 
-function showTrialLimit() {
-    document.getElementById('trial-limit-message').style.display = 'block';
-    document.getElementById('trial-text').disabled = true;
-    document.getElementById('transform-btn').disabled = true;
-    document.getElementById('transform-btn').textContent = 'Trial Limit Reached';
+function detectAI() {
+    const text = document.getElementById('detector-text').value;
+
+    if (!text.trim()) {
+        showNotification('Please enter some text to analyze', 'error');
+        return;
+    }
+
+    // Check trial limit
+    let trialUses = parseInt(localStorage.getItem('trialUses') || '0');
+    if (trialUses >= 8) {
+        showSignupModal();
+        return;
+    }
+
+    // Show loading
+    const button = document.querySelector('#detector-text').nextElementSibling.querySelector('.btn-primary');
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+    button.disabled = true;
+
+    // Simulate API call
+    setTimeout(() => {
+        const percentage = Math.floor(Math.random() * 100);
+        document.getElementById('progress-fill').style.width = percentage + '%';
+        document.getElementById('percentage-text').innerText = percentage + '%';
+        document.getElementById('confidence-text').innerText = percentage > 50 ? 'High AI content detected' : 'Mostly human-written content';
+
+        button.innerHTML = '<i class="fas fa-search"></i> Analyze Text';
+        button.disabled = false;
+
+        // Increment trial uses
+        trialUses++;
+        localStorage.setItem('trialUses', trialUses.toString());
+
+        showNotification('AI detection completed!', 'success');
+
+        // Check if limit reached after this use
+        if (trialUses >= 8) {
+            setTimeout(() => {
+                showSignupModal();
+            }, 1000);
+        }
+    }, 1500);
 }
+
+function rewriteText() {
+    const text = document.getElementById('rewriter-text').value;
+    const mode = document.getElementById('rewrite-mode').value;
+    const output = document.getElementById('rewriter-output');
+
+    if (!text.trim()) {
+        showNotification('Please enter some text to process', 'error');
+        return;
+    }
+
+    // Check trial limit
+    let trialUses = parseInt(localStorage.getItem('trialUses') || '0');
+    if (trialUses >= 8) {
+        showSignupModal();
+        return;
+    }
+
+    output.innerHTML = '<p>Processing...</p>';
+    output.classList.add('loading');
+
+    // Show loading on button
+    const button = document.querySelector('#rewriter-text').nextElementSibling.nextElementSibling.querySelector('.btn-primary');
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    button.disabled = true;
+
+    // Simulate API call
+    setTimeout(() => {
+        let result = text;
+        if (mode === 'summarize') {
+            result = 'Summary: ' + text.substring(0, 100) + '...';
+        } else if (mode === 'paraphrase') {
+            result = text.replace(/is/g, 'appears to be').replace(/are/g, 'seem to be');
+        } else {
+            result = text.replace(/The/g, 'This').replace(/A/g, 'One');
+        }
+
+        output.innerHTML = `<p>${result}</p>`;
+        output.classList.remove('loading');
+        button.innerHTML = '<i class="fas fa-edit"></i> Process Text';
+        button.disabled = false;
+
+        // Increment trial uses
+        trialUses++;
+        localStorage.setItem('trialUses', trialUses.toString());
+
+        showNotification('Text processed successfully!', 'success');
+
+        // Check if limit reached after this use
+        if (trialUses >= 8) {
+            setTimeout(() => {
+                showSignupModal();
+            }, 1000);
+        }
+    }, 1500);
+}
+
+function showSignupModal() {
+    document.getElementById('signup-modal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    document.getElementById('signup-modal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Handle modal form submission
+document.addEventListener('DOMContentLoaded', function() {
+    const modalForm = document.getElementById('modal-signup-form');
+    if (modalForm) {
+        modalForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                password: formData.get('password')
+            };
+
+            // Show loading
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+            submitBtn.disabled = true;
+
+            // Simulate signup
+            setTimeout(() => {
+                showNotification('Account created successfully! You can now log in.', 'success');
+                closeModal();
+                setTimeout(() => {
+                    window.location.href = '/login';
+                }, 2000);
+            }, 1500);
+        });
+    }
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function(event) {
+        const modal = document.getElementById('signup-modal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+});
 
 function redirectToSignup() {
     window.location.href = '/signup';
