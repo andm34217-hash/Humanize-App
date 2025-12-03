@@ -11,7 +11,7 @@ def detect_ai_text(text):
         return "No text provided"
     try:
         response = client.chat.completions.create(
-            model="llama3-8b-8192",
+            model="llama3-70b-8192",
             messages=[
                 {"role": "system", "content": "You are an AI detector. Analyze the text and respond with only 'AI' if it appears AI-generated, or 'Human' if it appears human-written."},
                 {"role": "user", "content": text}
