@@ -31,6 +31,10 @@ def pricing():
 @app.route('/signup')
 def signup():
     return render_template('signup.html')
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
 
 @app.route('/api/detect_ai', methods=['POST'])
 def detect_ai():
