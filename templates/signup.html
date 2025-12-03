@@ -22,15 +22,15 @@
             <form class="auth-form" method="POST" action="/signup">
                 <div class="form-group">
                     <label for="name">Full Name</label>
-                    <input type="text" id="name" name="name" required>
+                    <input type="text" id="name" name="name" required autocomplete="name">
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="email" required autocomplete="email">
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required minlength="6">
+                    <input type="password" id="password" name="password" required minlength="6" autocomplete="new-password">
                     <small style="color: var(--text-secondary); font-size: 0.875rem;">Must be at least 6 characters</small>
                 </div>
                 <button type="submit" class="btn-primary">Create Account</button>
