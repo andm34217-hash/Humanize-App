@@ -52,7 +52,8 @@ def detect_ai():
 def summarize():
     data = request.get_json()
     text = data.get('text', '')
-    result = summarize_text(text)
+    preferences = session.get('user', {}).get('preferences', {})
+    result = summarize_text(text, preferences)
     return jsonify({'result': result})
 
 @app.route('/api/rewrite', methods=['POST'])
@@ -88,7 +89,9 @@ def login_api():
                 'name': user['name'],
                 'plan': user['plan'],
                 'functions': user['functions'],
-                'actions_remaining': user['actions_remaining']
+                'actions_remaining': user['actions_remaining'],
+                'preferences': user.get('preferences', {}),
+                'history': user.get('history', [])
             }
             return jsonify({'success': True})
     return jsonify({'error': 'Invalid credentials'}), 401

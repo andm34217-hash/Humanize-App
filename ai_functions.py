@@ -23,17 +23,19 @@ def detect_ai_text(text):
     except Exception as e:
         return f"Error: {str(e)}"
 
-def summarize_text(text):
+def summarize_text(text, preferences=None):
     """
-    Summarize the given text using Groq.
+    Summarize the given text using Groq, personalized with user preferences.
     """
     if not text:
         return "No text to summarize"
+    tone = preferences.get('tone', 'neutral') if preferences else 'neutral'
     try:
+        system_prompt = f"Summarize the following text in a concise manner, using a {tone} tone."
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=[
-                {"role": "system", "content": "Summarize the following text in a concise manner."},
+                {"role": "system", "content": system_prompt},
                 {"role": "user", "content": text}
             ],
             max_tokens=100
