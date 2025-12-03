@@ -4,7 +4,26 @@
 
 {% block content %}
 <div class="container my-5">
-    <h1 class="text-center">Dashboard</h1>
-    <p class="text-center">Bine ai venit în dashboard-ul tău!</p>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Dashboard</h1>
+        <div class="text-end">
+            <p class="mb-0">Bine ai venit, {{ user.name }}!</p>
+            <a href="/logout" class="btn btn-sm btn-outline-primary ms-2">Logout</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Planul tău</h2>
+            <p>{{ user.plan }}</p>
+        </div>
+        <div class="col-md-6">
+            <h2>Funcții disponibile</h2>
+            <ul class="list-group">
+                {% for func in user.functions %}
+                <li class="list-group-item">{{ func }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 </div>
 {% endblock %}

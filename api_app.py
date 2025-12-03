@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session, redirect
 import os
+import json
 from dotenv import load_dotenv
 
 # Removed: sys.path.insert and relative imports
@@ -9,6 +10,8 @@ from calculators import calculate
 load_dotenv()  # Changed from load_dotenv('../app/.env')
 
 app = Flask(__name__, template_folder='templates', static_folder='static')  # Changed from '../app/templates' and '../app/static'
+
+app.secret_key = os.getenv('SECRET_KEY', 'default_secret_key')
 
 # Routes remain the same (identical to app.py)
 
@@ -22,7 +25,9 @@ def instrumente():
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html')
+    if 'user' not in session:
+        return redirect('/login')
+    return render_template('dashboard.html', user=session['user'])
 
 @app.route('/pricing')
 def pricing():
@@ -64,6 +69,30 @@ def calculate_api():
     params = data.get('params', {})
     result = calculate(calc_type, params)
     return jsonify({'result': result})
+
+@app.route('/api/login', methods=['POST'])
+def login_api():
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+    if not email or not password:
+        return jsonify({'error': 'Email and password required'}), 400
+    with open('users.json', 'r') as f:
+        users = json.load(f)
+    for user in users:
+        if user['email'] == email and user['password'] == password:
+            session['user'] = {
+                'name': user['name'],
+                'plan': user['plan'],
+                'functions': user['functions']
+            }
+            return redirect('/dashboard')
+    return jsonify({'error': 'Invalid credentials'}), 401
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=True)  # Added for standalone execution

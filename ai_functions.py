@@ -1,32 +1,62 @@
-# Placeholder implementations for AI functions
-# These should be replaced with actual AI API calls (e.g., OpenAI, Hugging Face)
+import os
+from groq import Groq
+
+client = Groq(api_key=os.getenv('GROQ_API_KEY'))
 
 def detect_ai_text(text):
     """
-    Detect if the given text is AI-generated.
-    Placeholder: Returns 'AI' if 'ai' is in text, else 'Human'.
+    Detect if the given text is AI-generated using Groq.
     """
     if not text:
         return "No text provided"
-    if "ai" in text.lower():
-        return "AI"
-    else:
-        return "Human"
+    try:
+        response = client.chat.completions.create(
+            model="llama3-8b-8192",
+            messages=[
+                {"role": "system", "content": "You are an AI detector. Analyze the text and respond with only 'AI' if it appears AI-generated, or 'Human' if it appears human-written."},
+                {"role": "user", "content": text}
+            ],
+            max_tokens=10
+        )
+        result = response.choices[0].message.content.strip()
+        return result if result in ['AI', 'Human'] else 'Unknown'
+    except Exception as e:
+        return f"Error: {str(e)}"
 
 def summarize_text(text):
     """
-    Summarize the given text.
-    Placeholder: Returns the first 50 characters followed by '...'.
+    Summarize the given text using Groq.
     """
     if not text:
         return "No text to summarize"
-    return text[:50] + "..." if len(text) > 50 else text
+    try:
+        response = client.chat.completions.create(
+            model="llama3-8b-8192",
+            messages=[
+                {"role": "system", "content": "Summarize the following text in a concise manner."},
+                {"role": "user", "content": text}
+            ],
+            max_tokens=100
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        return f"Error: {str(e)}"
 
 def rewrite_text(text):
     """
-    Rewrite the given text.
-    Placeholder: Returns the text in uppercase.
+    Rewrite the given text using Groq.
     """
     if not text:
         return "No text to rewrite"
-    return text.upper()
+    try:
+        response = client.chat.completions.create(
+            model="llama3-8b-8192",
+            messages=[
+                {"role": "system", "content": "Rewrite the following text in a different way, keeping the meaning intact."},
+                {"role": "user", "content": text}
+            ],
+            max_tokens=200
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        return f"Error: {str(e)}"

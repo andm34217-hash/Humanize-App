@@ -36,8 +36,27 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    // For now, just show a message
-    document.getElementById('login-result').innerHTML = '<div class="alert alert-success">Autentificare reușită!</div>';
+    document.getElementById('login-result').innerHTML = ''; // clear previous messages
+    try {
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
+        if (response.redirected) {
+            window.location.href = '/dashboard';
+        } else if (!response.ok) {
+            const errorData = await response.json();
+            document.getElementById('login-result').innerHTML = `<div class="alert alert-danger">${errorData.error}</div>`;
+        } else {
+            // unexpected success without redirect
+            window.location.href = '/dashboard';
+        }
+    } catch (err) {
+        document.getElementById('login-result').innerHTML = '<div class="alert alert-danger">Eroare de rețea</div>';
+    }
 });
 </script>
 {% endblock %}
