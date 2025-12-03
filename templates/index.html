@@ -1,81 +1,125 @@
 {% extends "base.html" %}
 
-{% block title %}Humanize - AI Writing & Academic Tools{% endblock %}
+{% block title %}Humanize - Transform AI Text into Human Writing{% endblock %}
 
 {% block content %}
 <section class="hero">
-    <div class="container">
-        <h1>Transform AI-Generated Text into Human Writing</h1>
-        <p>Make your content undetectable by AI detectors. Perfect for students, writers, and professionals who need authentic, human-like text.</p>
-        <div class="buttons">
-            <a href="/app" class="btn-primary">
-                <i class="fas fa-rocket"></i>
-                Try for Free
-            </a>
-            <a href="#features" class="btn-secondary">
-                <i class="fas fa-info-circle"></i>
-                Learn More
-            </a>
+    <div class="hero-container">
+        <div class="hero-content">
+            <h1>Transform AI-Generated Text into Human Writing</h1>
+            <p>Make your content undetectable by AI detectors. Perfect for students, writers, and professionals who need authentic, human-like text that passes all detection tools.</p>
+            <div class="hero-buttons">
+                <a href="#trial" class="btn-primary">
+                    Try for Free
+                </a>
+                <a href="#features" class="btn-secondary">
+                    Learn More
+                </a>
+            </div>
+        </div>
+        <div class="hero-illustration">
+            <div class="illustration-placeholder">
+                <i class="fas fa-magic"></i>
+                <p>AI Text Transformation</p>
+            </div>
         </div>
     </div>
 </section>
 
-<section class="features">
-    <div class="container">
-        <div class="feature-card">
-            <div class="feature-icon">
-                <i class="fas fa-brain"></i>
-            </div>
-            <h3>AI Text Humanizer</h3>
-            <p>Convert robotic AI text into natural, human-sounding content that passes all AI detection tools. Maintain your voice while ensuring authenticity.</p>
+<section id="trial" class="trial-section">
+    <div class="section-container">
+        <div class="trial-header">
+            <h2>Try it now – no account required</h2>
+            <p>Paste your AI-generated text below and see the transformation in action. You can try up to 3 times before creating an account.</p>
         </div>
-        <div class="feature-card">
-            <div class="feature-icon">
-                <i class="fas fa-search"></i>
+
+        <div class="trial-interface">
+            <div class="trial-input-group">
+                <label for="trial-text">Your AI-generated text</label>
+                <textarea id="trial-text" placeholder="Paste your text here..."></textarea>
+                <div class="trial-actions">
+                    <button id="transform-btn" class="btn-primary" onclick="transformText()">
+                        Transform
+                    </button>
+                </div>
             </div>
-            <h3>AI Content Detector</h3>
-            <p>Analyze any text to determine AI-generated content percentage with our advanced detection algorithm. Know what you're reading.</p>
+
+            <div class="trial-output-group">
+                <label>Humanized result</label>
+                <div id="trial-output" class="trial-output">
+                    <p>Your transformed text will appear here...</p>
+                </div>
+            </div>
         </div>
-        <div class="feature-card">
-            <div class="feature-icon">
-                <i class="fas fa-edit"></i>
-            </div>
-            <h3>Smart Rewriter</h3>
-            <p>Rewrite, paraphrase, and summarize text while preserving meaning. Perfect for academic writing, content creation, and SEO optimization.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">
-                <i class="fas fa-calculator"></i>
-            </div>
-            <h3>Academic Calculators</h3>
-            <p>Comprehensive scientific calculators for chemistry, physics, and mathematics. Essential tools for students and researchers.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">
-                <i class="fas fa-chart-line"></i>
-            </div>
-            <h3>Usage Analytics</h3>
-            <p>Track your writing improvements with detailed analytics. Monitor AI detection rates, word counts, and processing history.</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon">
-                <i class="fas fa-cloud"></i>
-            </div>
-            <h3>Cloud Sync</h3>
-            <p>Save, share, and export your processed texts. Access your work from any device with secure cloud storage.</p>
+
+        <div id="trial-limit-message" class="trial-limit-message" style="display: none;">
+            <h3>You've reached the free trial limit</h3>
+            <p>Create an account to continue transforming unlimited text.</p>
+            <a href="/signup" class="btn-primary">Create Account</a>
         </div>
     </div>
 </section>
 
-<section class="cta-section">
-    <div class="container">
-        <h2>Ready to Humanize Your Writing?</h2>
-        <p>Join thousands of students and professionals who trust Humanize to create authentic content.</p>
-        <a href="/signup" class="btn-primary">
-            <i class="fas fa-rocket"></i>
-            Start Free Trial
-        </a>
+<section id="features" class="features-section">
+    <div class="section-container">
+        <div class="features-header">
+            <h2>Powerful AI Writing Tools</h2>
+            <p>Everything you need to create authentic, human-like content that passes AI detection.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3>AI Text Humanizer</h3>
+                <p>Convert robotic AI text into natural, human-sounding content that passes all AI detection tools.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>AI Content Detector</h3>
+                <p>Analyze any text to determine AI-generated content percentage with our advanced detection algorithm.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <h3>Smart Rewriter</h3>
+                <p>Rewrite, paraphrase, and summarize text while preserving meaning and improving readability.</p>
+            </div>
+        </div>
     </div>
 </section>
 
+<section class="footer-section">
+    <div class="section-container">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>Humanize</h3>
+                <p>Transform AI text into human writing.</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-group">
+                    <h4>Product</h4>
+                    <a href="#features">Features</a>
+                    <a href="/pricing">Pricing</a>
+                    <a href="#trial">Try Free</a>
+                </div>
+                <div class="footer-group">
+                    <h4>Company</h4>
+                    <a href="/about">About</a>
+                    <a href="/contact">Contact</a>
+                    <a href="/privacy">Privacy</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Humanize. All rights reserved.</p>
+        </div>
+    </div>
+</section>
 {% endblock %}

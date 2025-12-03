@@ -1,43 +1,61 @@
 let detectionCache = new Map();
 let lastRewritten = '';
 
-function humanizeDemo() {
-    const text = document.getElementById('demo-text').value;
-    const output = document.getElementById('demo-output');
-    const button = document.getElementById('humanize-btn');
+function transformText() {
+    const text = document.getElementById('trial-text').value;
+    const output = document.getElementById('trial-output');
+    const button = document.getElementById('transform-btn');
 
     if (!text.trim()) {
-        showNotification('Please enter some text to humanize', 'error');
+        showNotification('Please enter some text to transform', 'error');
         return;
     }
 
-    if (text.length > 500) {
-        showNotification('Text exceeds 500 character limit for free trial', 'error');
+    // Check trial limit
+    let trialUses = parseInt(localStorage.getItem('trialUses') || '0');
+    if (trialUses >= 3) {
+        showTrialLimit();
         return;
     }
 
     // Show loading state
-    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Humanizing...';
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Transforming...';
     button.disabled = true;
-    output.classList.add('loading');
     output.innerHTML = '<p>Processing your text...</p>';
 
     // Simulate API call (replace with actual fetch when backend is ready)
     setTimeout(() => {
-        // Mock humanized text
-        const humanizedText = text.replace(/AI-generated/g, 'human-crafted')
-                                  .replace(/robotic/g, 'natural')
-                                  .replace(/artificial/g, 'authentic')
-                                  .replace(/lacks/g, 'maintains')
-                                  .replace(/transform/g, 'enhance');
+        // Mock transformed text
+        const transformedText = text.replace(/AI-generated/g, 'human-crafted')
+                                   .replace(/robotic/g, 'natural')
+                                   .replace(/artificial/g, 'authentic')
+                                   .replace(/lacks/g, 'maintains')
+                                   .replace(/transform/g, 'enhance');
 
-        output.innerHTML = `<p>${humanizedText}</p>`;
-        output.classList.remove('loading');
-        button.innerHTML = '<i class="fas fa-magic"></i> Humanize Text (Free Trial)';
+        output.innerHTML = `<p>${transformedText}</p>`;
+        button.innerHTML = 'Transform';
         button.disabled = false;
 
-        showNotification('Text humanized successfully! Create an account for unlimited usage.', 'success');
+        // Increment trial uses
+        trialUses++;
+        localStorage.setItem('trialUses', trialUses.toString());
+
+        showNotification('Text transformed successfully!', 'success');
+
+        // Check if limit reached after this use
+        if (trialUses >= 3) {
+            setTimeout(() => {
+                showTrialLimit();
+            }, 1000);
+        }
     }, 2000);
+}
+
+function showTrialLimit() {
+    document.getElementById('trial-limit-message').style.display = 'block';
+    document.getElementById('trial-text').disabled = true;
+    document.getElementById('transform-btn').disabled = true;
+    document.getElementById('transform-btn').textContent = 'Trial Limit Reached';
 }
 
 function redirectToSignup() {
