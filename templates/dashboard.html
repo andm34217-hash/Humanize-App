@@ -3,27 +3,107 @@
 {% block title %}Dashboard - Humanize{% endblock %}
 
 {% block content %}
-<div class="container my-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Dashboard</h1>
-        <div class="text-end">
-            <p class="mb-0">Bine ai venit, {{ user.name }}!</p>
-            <a href="/logout" class="btn btn-sm btn-outline-primary ms-2">Logout</a>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <h2>Planul tău</h2>
-            <p>{{ user.plan }}</p>
-        </div>
-        <div class="col-md-6">
-            <h2>Funcții disponibile</h2>
-            <ul class="list-group">
-                {% for func in user.functions %}
-                <li class="list-group-item">{{ func }}</li>
-                {% endfor %}
+<div class="d-flex">
+    <!-- Sidebar -->
+    <nav class="bg-light sidebar" style="width: 250px; min-height: 100vh;">
+        <div class="p-3">
+            <h5 class="text-center mb-4">Humanize</h5>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/instrumente">Instrumente</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/pricing">Pricing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
             </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="flex-grow-1">
+        <!-- Header -->
+        <header class="bg-white shadow-sm p-3 d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Bine ai venit, {{ user.name }}!</h4>
+            <div class="d-flex align-items-center">
+                <span class="badge bg-primary me-3">Plan: {{ user.plan }}</span>
+                <a href="/pricing" class="btn btn-outline-success btn-sm">Upgrade</a>
+            </div>
+        </header>
+
+        <div class="container-fluid p-4">
+            <!-- Usage Indicator -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Utilizare</h5>
+                            {% if user.actions_remaining == -1 %}
+                            <p class="text-success">Acțiuni nelimitate (Premium)</p>
+                            {% else %}
+                            <p>Acțiuni rămase azi: <strong>{{ user.actions_remaining }}</strong></p>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: {{ (user.actions_remaining / 10) * 100 }}%" aria-valuenow="{{ user.actions_remaining }}" aria-valuemin="0" aria-valuemax="10"></div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <h5>Acțiuni Rapide</h5>
+                </div>
+            </div>
+            <div class="row">
+                {% for func in user.functions %}
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <h6 class="card-title">{{ func.replace('_', ' ').title() }}</h6>
+                            <button class="btn btn-primary" onclick="useFunction('{{ func }}')">Folosește</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Plan Benefits -->
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Avantajele Planului Tău</h5>
+                        </div>
+                        <div class="card-body">
+                            {% if user.plan == 'Free' %}
+                            <p>Acces la funcții de bază, 10 acțiuni/zi.</p>
+                            <p class="text-muted">Upgrade pentru mai multe funcții!</p>
+                            {% elif user.plan == 'Pro' %}
+                            <p>Funcții avansate, 100 acțiuni/zi, export posibil.</p>
+                            {% elif user.plan == 'Premium' %}
+                            <p>Toate funcțiile, acțiuni nelimitate, suport prioritizat.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+function useFunction(func) {
+    // Placeholder for using function
+    alert('Funcția ' + func + ' va fi deschisă.');
+    // Could redirect to /instrumente or open modal
+}
+</script>
 {% endblock %}

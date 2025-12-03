@@ -87,7 +87,8 @@ def login_api():
             session['user'] = {
                 'name': user['name'],
                 'plan': user['plan'],
-                'functions': user['functions']
+                'functions': user['functions'],
+                'actions_remaining': user['actions_remaining']
             }
             return jsonify({'success': True})
     return jsonify({'error': 'Invalid credentials'}), 401
