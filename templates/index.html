@@ -81,14 +81,24 @@
 <section id="demo" class="demo-section">
     <div class="container">
         <div class="demo-container">
-            <h2>Try Humanize Now</h2>
+            <h2>Try Humanize Free Trial</h2>
+            <p class="trial-info">Limited to 500 characters per text. Create an account to unlock unlimited usage.</p>
             <div class="demo-input">
-                <textarea id="demo-text" placeholder="Paste your AI-generated text here...">This is an example of AI-generated text that sounds robotic and artificial. It lacks the natural flow and personality of human writing. Humanize will transform this into content that reads naturally and passes AI detection.</textarea>
+                <textarea id="demo-text" placeholder="Paste your AI-generated text here (max 500 characters)..." maxlength="500">This is an example of AI-generated text that sounds robotic and artificial. It lacks the natural flow and personality of human writing. Humanize will transform this into content that reads naturally and passes AI detection.</textarea>
+                <div class="char-counter">
+                    <span id="char-count">0</span>/500 characters
+                </div>
             </div>
-            <button id="humanize-btn" class="btn-primary demo-button" onclick="humanizeDemo()">
-                <i class="fas fa-magic"></i>
-                Humanize Text
-            </button>
+            <div class="demo-actions">
+                <button id="humanize-btn" class="btn-primary demo-button" onclick="humanizeDemo()">
+                    <i class="fas fa-magic"></i>
+                    Humanize Text (Free Trial)
+                </button>
+                <button id="create-account-btn" class="btn-secondary demo-button" onclick="redirectToSignup()">
+                    <i class="fas fa-user-plus"></i>
+                    Create Account to Continue
+                </button>
+            </div>
             <div class="demo-output" id="demo-output">
                 <p>Your humanized text will appear here...</p>
             </div>

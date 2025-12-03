@@ -11,6 +11,11 @@ function humanizeDemo() {
         return;
     }
 
+    if (text.length > 500) {
+        showNotification('Text exceeds 500 character limit for free trial', 'error');
+        return;
+    }
+
     // Show loading state
     button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Humanizing...';
     button.disabled = true;
@@ -28,12 +33,36 @@ function humanizeDemo() {
 
         output.innerHTML = `<p>${humanizedText}</p>`;
         output.classList.remove('loading');
-        button.innerHTML = '<i class="fas fa-magic"></i> Humanize Text';
+        button.innerHTML = '<i class="fas fa-magic"></i> Humanize Text (Free Trial)';
         button.disabled = false;
 
-        showNotification('Text humanized successfully!', 'success');
+        showNotification('Text humanized successfully! Create an account for unlimited usage.', 'success');
     }, 2000);
 }
+
+function redirectToSignup() {
+    window.location.href = '/signup';
+}
+
+// Character counter for demo textarea
+function updateCharCount() {
+    const textarea = document.getElementById('demo-text');
+    const counter = document.getElementById('char-count');
+    if (textarea && counter) {
+        const count = textarea.value.length;
+        counter.textContent = count;
+        counter.style.color = count > 450 ? '#e74c3c' : count > 400 ? '#f39c12' : '#666';
+    }
+}
+
+// Initialize character counter
+document.addEventListener('DOMContentLoaded', function() {
+    const demoTextarea = document.getElementById('demo-text');
+    if (demoTextarea) {
+        demoTextarea.addEventListener('input', updateCharCount);
+        updateCharCount(); // Initial count
+    }
+});
 
 function showNotification(message, type = 'info') {
     // Create notification element
