@@ -77,8 +77,11 @@ def login_api():
     password = data.get('password')
     if not email or not password:
         return jsonify({'error': 'Email and password required'}), 400
-    with open('users.json', 'r') as f:
-        users = json.load(f)
+    try:
+        with open('users.json', 'r') as f:
+            users = json.load(f)
+    except Exception as e:
+        return jsonify({'error': f'Error loading users: {str(e)}'}), 500
     for user in users:
         if user['email'] == email and user['password'] == password:
             session['user'] = {
