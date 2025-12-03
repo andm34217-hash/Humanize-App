@@ -11,7 +11,7 @@ def detect_ai_text(text):
         return "No text provided"
     try:
         response = client.chat.completions.create(
-            model="llama3-70b-8192",
+            model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "system", "content": "You are an AI detector. Analyze the text and respond with only 'AI' if it appears AI-generated, or 'Human' if it appears human-written."},
                 {"role": "user", "content": text}
@@ -31,7 +31,7 @@ def summarize_text(text):
         return "No text to summarize"
     try:
         response = client.chat.completions.create(
-            model="llama3-70b-8192",
+            model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "system", "content": "Summarize the following text in a concise manner."},
                 {"role": "user", "content": text}
@@ -50,7 +50,7 @@ def rewrite_text(text):
         return "No text to rewrite"
     try:
         response = client.chat.completions.create(
-            model="llama3-70b-8192",
+            model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "system", "content": "Rewrite the following text in a different way, keeping the meaning intact."},
                 {"role": "user", "content": text}
