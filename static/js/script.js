@@ -1,72 +1,20 @@
-let detectionCache = new Map();
-let lastRewritten = '';
+// Basic notification system
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+        ${message}
+    `;
 
-function humanizeDemo() {
-    const text = document.getElementById('demo-text').value;
-    const output = document.getElementById('demo-output');
-    const button = document.getElementById('humanize-btn');
+    document.body.appendChild(notification);
 
-    if (!text.trim()) {
-        showNotification('Please enter some text to humanize', 'error');
-        return;
-    }
+    setTimeout(() => notification.classList.add('show'), 100);
 
-    // Check trial limit
-    let trialUses = parseInt(localStorage.getItem('trialUses') || '0');
-    if (trialUses >= 3) {
-        showTrialLimit();
-        return;
-    }
-
-    // Show loading state
-    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Humanizing...';
-    button.disabled = true;
-    output.classList.add('loading');
-    output.innerHTML = '<p>Processing your text...</p>';
-
-    // Simulate API call (replace with actual fetch when backend is ready)
     setTimeout(() => {
-        // Mock humanized text
-        const humanizedText = text.replace(/AI-generated/g, 'human-crafted')
-                                  .replace(/robotic/g, 'natural')
-                                  .replace(/artificial/g, 'authentic')
-                                  .replace(/lacks/g, 'maintains')
-                                  .replace(/transform/g, 'enhance');
-
-        output.innerHTML = `<p>${humanizedText}</p>`;
-        output.classList.remove('loading');
-        button.innerHTML = '<i class="fas fa-magic"></i> Humanize Text (Free Trial)';
-        button.disabled = false;
-
-        // Increment trial uses
-        trialUses++;
-        localStorage.setItem('trialUses', trialUses.toString());
-
-        showNotification('Text humanized successfully!', 'success');
-
-        // Check if limit reached after this use
-        if (trialUses >= 3) {
-            setTimeout(() => {
-                showTrialLimit();
-            }, 1000);
-        }
-    }, 2000);
-}
-
-function showTrialLimit() {
-    const limitMessage = document.getElementById('trial-limit-message');
-    if (limitMessage) {
-        limitMessage.style.display = 'block';
-    }
-    const textArea = document.getElementById('demo-text');
-    if (textArea) {
-        textArea.disabled = true;
-    }
-    const button = document.getElementById('humanize-btn');
-    if (button) {
-        button.disabled = true;
-        button.innerHTML = '<i class="fas fa-lock"></i> Trial Ended';
-    }
+        notification.classList.remove('show');
+        setTimeout(() => document.body.removeChild(notification), 300);
+    }, 3000);
 }
 
 function showNotification(message, type = 'info') {
