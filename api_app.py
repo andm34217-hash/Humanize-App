@@ -43,32 +43,145 @@ def login():
 
 @app.route('/api/detect_ai', methods=['POST'])
 def detect_ai():
+    if 'user' not in session:
+        return jsonify({'error': 'Trebuie să fiți conectat pentru a utiliza această funcție'}), 401
+
+    user = session['user']
+    if user['actions_remaining'] == 0:
+        return jsonify({'error': 'Ați epuizat acțiunile zilnice. Upgrade pentru mai multe acțiuni!'}), 403
+
     data = request.get_json()
     text = data.get('text', '')
+    if not text.strip():
+        return jsonify({'error': 'Introduceți text pentru analiză'}), 400
+
     result = detect_ai_text(text)
+
+    # Decrement actions for Free plan users
+    if user['actions_remaining'] > 0:
+        user['actions_remaining'] -= 1
+        session['user'] = user
+        # Update users.json
+        try:
+            with open('users.json', 'r') as f:
+                users = json.load(f)
+            for u in users:
+                if u['email'] == user['email']:
+                    u['actions_remaining'] = user['actions_remaining']
+                    break
+            with open('users.json', 'w') as f:
+                json.dump(users, f, indent=2)
+        except Exception as e:
+            print(f"Error updating user actions: {e}")
+
     return jsonify({'result': result})
 
 @app.route('/api/summarize', methods=['POST'])
 def summarize():
+    if 'user' not in session:
+        return jsonify({'error': 'Trebuie să fiți conectat pentru a utiliza această funcție'}), 401
+
+    user = session['user']
+    if user['actions_remaining'] == 0:
+        return jsonify({'error': 'Ați epuizat acțiunile zilnice. Upgrade pentru mai multe acțiuni!'}), 403
+
     data = request.get_json()
     text = data.get('text', '')
-    preferences = session.get('user', {}).get('preferences', {})
+    if not text.strip():
+        return jsonify({'error': 'Introduceți text pentru rezumat'}), 400
+
+    preferences = user.get('preferences', {})
     result = summarize_text(text, preferences)
+
+    # Decrement actions for Free plan users
+    if user['actions_remaining'] > 0:
+        user['actions_remaining'] -= 1
+        session['user'] = user
+        # Update users.json
+        try:
+            with open('users.json', 'r') as f:
+                users = json.load(f)
+            for u in users:
+                if u['email'] == user['email']:
+                    u['actions_remaining'] = user['actions_remaining']
+                    break
+            with open('users.json', 'w') as f:
+                json.dump(users, f, indent=2)
+        except Exception as e:
+            print(f"Error updating user actions: {e}")
+
     return jsonify({'result': result})
 
 @app.route('/api/rewrite', methods=['POST'])
 def rewrite():
+    if 'user' not in session:
+        return jsonify({'error': 'Trebuie să fiți conectat pentru a utiliza această funcție'}), 401
+
+    user = session['user']
+    if user['actions_remaining'] == 0:
+        return jsonify({'error': 'Ați epuizat acțiunile zilnice. Upgrade pentru mai multe acțiuni!'}), 403
+
     data = request.get_json()
     text = data.get('text', '')
+    if not text.strip():
+        return jsonify({'error': 'Introduceți text pentru rescriere'}), 400
+
     result = rewrite_text(text)
+
+    # Decrement actions for Free plan users
+    if user['actions_remaining'] > 0:
+        user['actions_remaining'] -= 1
+        session['user'] = user
+        # Update users.json
+        try:
+            with open('users.json', 'r') as f:
+                users = json.load(f)
+            for u in users:
+                if u['email'] == user['email']:
+                    u['actions_remaining'] = user['actions_remaining']
+                    break
+            with open('users.json', 'w') as f:
+                json.dump(users, f, indent=2)
+        except Exception as e:
+            print(f"Error updating user actions: {e}")
+
     return jsonify({'result': result})
 
 @app.route('/api/calculate', methods=['POST'])
 def calculate_api():
+    if 'user' not in session:
+        return jsonify({'error': 'Trebuie să fiți conectat pentru a utiliza calculatorul'}), 401
+
+    user = session['user']
+    if user['actions_remaining'] == 0:
+        return jsonify({'error': 'Ați epuizat acțiunile zilnice. Upgrade pentru mai multe acțiuni!'}), 403
+
     data = request.get_json()
     calc_type = data.get('type')
     params = data.get('params', {})
+
+    if not calc_type:
+        return jsonify({'error': 'Selectați un tip de calcul'}), 400
+
     result = calculate(calc_type, params)
+
+    # Decrement actions for Free plan users
+    if user['actions_remaining'] > 0:
+        user['actions_remaining'] -= 1
+        session['user'] = user
+        # Update users.json
+        try:
+            with open('users.json', 'r') as f:
+                users = json.load(f)
+            for u in users:
+                if u['email'] == user['email']:
+                    u['actions_remaining'] = user['actions_remaining']
+                    break
+            with open('users.json', 'w') as f:
+                json.dump(users, f, indent=2)
+        except Exception as e:
+            print(f"Error updating user actions: {e}")
+
     return jsonify({'result': result})
 
 @app.route('/api/login', methods=['POST'])

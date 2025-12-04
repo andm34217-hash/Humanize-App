@@ -1,7 +1,15 @@
 import os
 from groq import Groq
 
-client = Groq(api_key=os.getenv('GROQ_API_KEY'))
+groq_key = os.getenv('GROQ_API_KEY')
+if not groq_key or groq_key == 'your_groq_api_key_here':
+    client = None
+else:
+    try:
+        client = Groq(api_key=groq_key)
+    except Exception as e:
+        print(f"Warning: Failed to initialize Groq client: {e}")
+        client = None
 
 def detect_ai_text(text):
     """
@@ -9,6 +17,10 @@ def detect_ai_text(text):
     """
     if not text:
         return "No text provided"
+
+    if client is None:
+        return "AI service not configured. Please check GROQ_API_KEY."
+
     try:
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
@@ -29,6 +41,10 @@ def summarize_text(text, preferences=None):
     """
     if not text:
         return "No text to summarize"
+
+    if client is None:
+        return "AI service not configured. Please check GROQ_API_KEY."
+
     tone = preferences.get('tone', 'neutral') if preferences else 'neutral'
     try:
         system_prompt = f"Summarize the following text in a concise manner, using a {tone} tone."
@@ -50,6 +66,10 @@ def rewrite_text(text):
     """
     if not text:
         return "No text to rewrite"
+
+    if client is None:
+        return "AI service not configured. Please check GROQ_API_KEY."
+
     try:
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",

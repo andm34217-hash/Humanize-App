@@ -4,6 +4,32 @@
 
 {% block content %}
 <div class="container my-5">
+    {% if not session.user %}
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="alert alert-warning text-center">
+                <h4>Trebuie să fiți conectat</h4>
+                <p>Pentru a utiliza instrumentele AI, trebuie să vă conectați mai întâi.</p>
+                <a href="/login" class="btn btn-primary">Conectează-te</a>
+                <a href="/signup" class="btn btn-outline-primary ms-2">Înscrie-te</a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="alert alert-info">
+                <strong>Utilizator:</strong> {{ session.user.name }} |
+                <strong>Plan:</strong> {{ session.user.plan }} |
+                <strong>Acțiuni rămase:</strong>
+                {% if session.user.actions_remaining == -1 %}
+                Nelimitate
+                {% else %}
+                {{ session.user.actions_remaining }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
     <h1 class="text-center mb-5">Instrumente AI</h1>
 
     <div class="row">
@@ -64,42 +90,65 @@
             </div>
         </div>
     </div>
+    {% endif %}
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script>
+async function makeAPIRequest(endpoint, data) {
+    try {
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.error || 'Eroare necunoscută');
+        }
+
+        return result;
+    } catch (error) {
+        throw new Error(error.message || 'Eroare de rețea');
+    }
+}
+
 document.getElementById('detect-btn').addEventListener('click', async () => {
     const text = document.getElementById('ai-text').value;
-    const response = await fetch('/api/detect_ai', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text })
-    });
-    const data = await response.json();
-    document.getElementById('ai-result').innerText = data.result;
+    const resultDiv = document.getElementById('ai-result');
+
+    try {
+        const data = await makeAPIRequest('/api/detect_ai', { text });
+        resultDiv.innerHTML = `<div class="alert alert-success">${data.result}</div>`;
+    } catch (error) {
+        resultDiv.innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
+    }
 });
 
 document.getElementById('summary-btn').addEventListener('click', async () => {
     const text = document.getElementById('summary-text').value;
-    const response = await fetch('/api/summarize', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text })
-    });
-    const data = await response.json();
-    document.getElementById('summary-result').innerText = data.result;
+    const resultDiv = document.getElementById('summary-result');
+
+    try {
+        const data = await makeAPIRequest('/api/summarize', { text });
+        resultDiv.innerHTML = `<div class="alert alert-success">${data.result}</div>`;
+    } catch (error) {
+        resultDiv.innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
+    }
 });
 
 document.getElementById('rewrite-btn').addEventListener('click', async () => {
     const text = document.getElementById('rewrite-text').value;
-    const response = await fetch('/api/rewrite', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text })
-    });
-    const data = await response.json();
-    document.getElementById('rewrite-result').innerText = data.result;
+    const resultDiv = document.getElementById('rewrite-result');
+
+    try {
+        const data = await makeAPIRequest('/api/rewrite', { text });
+        resultDiv.innerHTML = `<div class="alert alert-success">${data.result}</div>`;
+    } catch (error) {
+        resultDiv.innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
+    }
 });
 
 document.getElementById('calc-type').addEventListener('change', () => {
@@ -130,13 +179,15 @@ document.getElementById('calc-btn').addEventListener('click', async () => {
     } else if (type === 'math_expansion') {
         params.expression = document.getElementById('expression').value;
     }
-    const response = await fetch('/api/calculate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type, params })
-    });
-    const data = await response.json();
-    document.getElementById('calc-result').innerText = data.result;
+
+    const resultDiv = document.getElementById('calc-result');
+
+    try {
+        const data = await makeAPIRequest('/api/calculate', { type, params });
+        resultDiv.innerHTML = `<div class="alert alert-success">${data.result}</div>`;
+    } catch (error) {
+        resultDiv.innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
+    }
 });
 </script>
 {% endblock %}
