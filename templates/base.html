@@ -24,9 +24,14 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="/">Acasă</a></li>
                     <li class="nav-item"><a class="nav-link" href="/instrumente">Instrumente</a></li>
+                    {% if session.user %}
                     <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                    {% else %}
                     <li class="nav-item"><a class="nav-link" href="/pricing">Prețuri</a></li>
-                    <li class="nav-item"><a class="btn btn-primary ms-2" href="/signup">Înscrie-te</a></li>
+                    <li class="nav-item"><a class="btn btn-outline-light me-2" href="/login">Conectează-te</a></li>
+                    <li class="nav-item"><a class="btn btn-primary" href="/signup">Înscrie-te</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
